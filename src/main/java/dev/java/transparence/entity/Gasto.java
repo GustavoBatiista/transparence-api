@@ -24,7 +24,7 @@ public class Gasto {
     @Column(name = "valor_gasto", nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
     @Column(name = "data_gasto", nullable = false)
-    private LocalDate data;
+    private LocalDate dataGasto;
     @Column(name = "comprovante_url")
     private String comprovanteUrl;
     @ManyToOne
@@ -33,17 +33,21 @@ public class Gasto {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "contrato_id", nullable = false)
+    private Contrato contrato;
 
     public Gasto() {
     }
 
-    public Gasto(PessoaCuidada pessoaCuidada, Usuario usuario,
-        String descricao, BigDecimal valor, LocalDate dataGasto) {
+    public Gasto(PessoaCuidada pessoaCuidada, Usuario usuario, Contrato contrato,
+            String descricao, BigDecimal valor, LocalDate dataGasto) {
         this.pessoaCuidada = pessoaCuidada;
         this.usuario = usuario;
+        this.contrato = contrato;
         this.descricao = descricao;
         this.valor = valor;
-        this.data = dataGasto;
+        this.dataGasto = dataGasto;
     }
 
     public Long getId() {
@@ -66,12 +70,12 @@ public class Gasto {
         this.valor = valor;
     }
 
-    public LocalDate getData() {
-        return data;
+    public LocalDate getDataGasto() {
+        return dataGasto;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setDataGasto(LocalDate dataGasto) {
+        this.dataGasto = dataGasto;
     }
 
     public String getComprovanteUrl() {
@@ -80,6 +84,10 @@ public class Gasto {
 
     public void setComprovanteUrl(String comprovanteUrl) {
         this.comprovanteUrl = comprovanteUrl;
+    }
+
+    public Contrato getContrato() {
+        return contrato;
     }
 
     @Override
@@ -109,7 +117,7 @@ public class Gasto {
 
     @Override
     public String toString() {
-        return "Gasto [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", data=" + data
+        return "Gasto [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", dataGasto=" + dataGasto
                 + ", comprovanteUrl=" + comprovanteUrl + "]";
     }
 

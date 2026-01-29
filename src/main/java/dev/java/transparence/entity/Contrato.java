@@ -65,6 +65,10 @@ public class Contrato  {
         this.pessoaCuidada = pessoaCuidada;
     }
 
+    public Long getPessoaCuidadaId() {
+        return pessoaCuidada.getId();
+    }
+
     public LocalDate getDataInicio() {
         return dataInicio;
     }

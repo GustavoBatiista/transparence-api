@@ -61,10 +61,6 @@ public class Usuario {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -75,10 +71,6 @@ public class Usuario {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getSenha() {
@@ -160,6 +152,5 @@ public class Usuario {
                 + ", endereco=" + endereco + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + "]";
     }
 
-   
 
 }

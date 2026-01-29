@@ -33,14 +33,17 @@ public class Recebimento {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-
+    @ManyToOne
+    @JoinColumn(name = "contrato_id", nullable = false)
+    private Contrato contrato;
     public Recebimento() {
     }
 
-    public Recebimento(PessoaCuidada pessoaCuidada, Usuario usuario,
+    public Recebimento(PessoaCuidada pessoaCuidada, Usuario usuario, Contrato contrato,
             String descricao, BigDecimal valor, LocalDate dataRecebimento) {
         this.pessoaCuidada = pessoaCuidada;
         this.usuario = usuario;
+        this.contrato = contrato;
         this.descricao = descricao;
         this.valor = valor;
         this.dataRecebimento = dataRecebimento;
@@ -98,6 +101,10 @@ public class Recebimento {
         this.usuario = usuario;
     }
 
+    public Contrato getContrato() {
+        return contrato;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -127,7 +134,7 @@ public class Recebimento {
     public String toString() {
         return "Recebimento [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", dataRecebimento=" + dataRecebimento
                 + ", comprovanteUrl=" + comprovanteUrl + ", pessoaCuidada=" + pessoaCuidada + ", usuario=" + usuario
-                + "]";
+                + ", contrato=" + contrato + "]";
     }
 
 }
