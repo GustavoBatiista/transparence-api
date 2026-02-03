@@ -42,7 +42,8 @@ public class RecebimentoService {
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas contratos ativos podem receber");
         }
-        if (recebimentoRepository.existsLancamentoRecebimento(pessoaCuidadaId, usuarioId,
+        if (recebimentoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(pessoaCuidadaId,
+                usuarioId,
                 dataRecebimento, valor)) {
             throw new RuntimeException("Recebimento já cadastrado");
         }

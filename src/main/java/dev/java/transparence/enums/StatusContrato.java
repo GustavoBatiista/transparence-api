@@ -1,4 +1,4 @@
-package dev.java.transparence.entity;
+package dev.java.transparence.enums;
 
 public enum StatusContrato {
 

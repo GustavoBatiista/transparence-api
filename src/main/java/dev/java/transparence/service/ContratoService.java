@@ -29,7 +29,7 @@ public class ContratoService {
     public Contrato incluirContrato(Long usuarioId, Long pessoaCuidadaId) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
         PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaPorId(pessoaCuidadaId);
-        if (contratoRepository.existsByUsuarioIdAndPessoaCuidadaIdAndStatus(usuario.getId(), pessoaCuidada.getId(),
+        if (contratoRepository.existsByUsuario_IdAndPessoaCuidada_IdAndStatus(usuario.getId(), pessoaCuidada.getId(),
                 StatusContrato.ATIVO)) {
             throw new RuntimeException("Contrato já cadastrado");
         }

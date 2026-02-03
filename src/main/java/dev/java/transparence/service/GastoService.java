@@ -40,7 +40,7 @@ public class GastoService {
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas contratos ativos podem gastar");
         }
-        if (gastoRepository.existsLancamentoGasto(pessoaCuidadaId, usuarioId,
+        if (gastoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(pessoaCuidadaId, usuarioId,
                 dataGasto, valor)) {
             throw new RuntimeException("Gasto já cadastrado");
         }
