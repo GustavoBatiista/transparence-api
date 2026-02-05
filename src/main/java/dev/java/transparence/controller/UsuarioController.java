@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.java.transparence.entity.Usuario;
+import dev.java.transparence.dto.UsuarioRequestDTO;
+import dev.java.transparence.dto.UsuarioResponseDTO;
 import dev.java.transparence.service.UsuarioService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "1 - Usuário", description = "API para gerenciar usuários")
@@ -22,19 +24,19 @@ public class UsuarioController {
 
     private UsuarioService usuarioService;
 
-
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> incluirUsuario(@RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.incluirUsuario(usuario));
+    public ResponseEntity<UsuarioResponseDTO> incluirUsuario(@RequestBody UsuarioRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.incluirUsuario(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.atualizarUsuario(id, usuario));
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id,
+            @RequestBody UsuarioRequestDTO dto) {
+        return ResponseEntity.ok(usuarioService.atualizarUsuario(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -44,7 +46,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.buscarUsuarioPorId(id));
+    public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorId(id));
     }
 }

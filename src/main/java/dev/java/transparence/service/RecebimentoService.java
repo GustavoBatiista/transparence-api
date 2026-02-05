@@ -1,17 +1,17 @@
 package dev.java.transparence.service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import dev.java.transparence.dto.RecebimentoRequestDTO;
+import dev.java.transparence.dto.RecebimentoResponseDTO;
 import dev.java.transparence.entity.Contrato;
 import dev.java.transparence.entity.PessoaCuidada;
 import dev.java.transparence.entity.Recebimento;
-
-import dev.java.transparence.enums.StatusContrato;
 import dev.java.transparence.entity.Usuario;
+import dev.java.transparence.enums.StatusContrato;
 import dev.java.transparence.repository.RecebimentoRepository;
 
 @Service
@@ -33,39 +33,42 @@ public class RecebimentoService {
         this.contratoService = contratoService;
     }
 
-    public Recebimento incluirRecebimento(Long pessoaCuidadaId, Long usuarioId, Long contratoId,
-            String descricao, BigDecimal valor,
-            LocalDate dataRecebimento) {
-        PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaPorId(pessoaCuidadaId);
-        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
-        Contrato contrato = contratoService.buscarContratoPorId(contratoId);
+    public RecebimentoResponseDTO incluirRecebimento(RecebimentoRequestDTO dto) {
+        PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaEntityPorId(dto.getPessoaCuidadaId());
+        Usuario usuario = usuarioService.buscarUsuarioEntityPorId(dto.getUsuarioId());
+        Contrato contrato = contratoService.buscarContratoEntityPorId(dto.getContratoId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas contratos ativos podem receber");
         }
-        if (recebimentoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(pessoaCuidadaId,
-                usuarioId,
-                dataRecebimento, valor)) {
+        boolean existeRecebimento = recebimentoRepository
+                .existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(dto.getPessoaCuidadaId(),
+                        dto.getUsuarioId(), dto.getDataRecebimento(), dto.getValor());
+        if (existeRecebimento) {
             throw new RuntimeException("Recebimento já cadastrado");
         }
-        Recebimento recebimento = new Recebimento(pessoaCuidada, usuario, contrato, descricao, valor, dataRecebimento);
-        return recebimentoRepository.save(recebimento);
+        Recebimento recebimento = new Recebimento(pessoaCuidada, usuario, contrato, dto.getDescricao(), dto.getValor(),
+                dto.getDataRecebimento());
+        Recebimento salvo = recebimentoRepository.save(recebimento);
+        return toResponseDTO(salvo);
     }
 
-    public Recebimento atualizarRecebimento(Long id, String descricao, BigDecimal valor,
-            LocalDate dataRecebimento) {
-        Recebimento recebimentoExistente = buscarRecebimentoPorId(id);
+    public RecebimentoResponseDTO atualizarRecebimento(Long id, RecebimentoRequestDTO dto) {
+        Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
         Contrato contrato = recebimentoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas recebimentos de contratos ativos podem ser atualizados");
         }
-        recebimentoExistente.setDescricao(descricao);
-        recebimentoExistente.setValor(valor);
-        recebimentoExistente.setDataRecebimento(dataRecebimento);
-        return recebimentoRepository.save(recebimentoExistente);
+        recebimentoExistente.setDescricao(dto.getDescricao());
+        recebimentoExistente.setValor(dto.getValor());
+        recebimentoExistente.setDataRecebimento(dto.getDataRecebimento());
+        return toResponseDTO(recebimentoRepository.save(recebimentoExistente));
     }
 
     public void excluirRecebimento(Long id) {
-        Recebimento recebimentoExistente = buscarRecebimentoPorId(id);
+        Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
+        if (!recebimentoRepository.existsById(id)) {
+            throw new RuntimeException("Recebimento não encontrado");
+        }
         Contrato contrato = recebimentoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas recebimentos de contratos ativos podem ser excluídos");
@@ -73,11 +76,29 @@ public class RecebimentoService {
         recebimentoRepository.deleteById(recebimentoExistente.getId());
     }
 
-    public Recebimento buscarRecebimentoPorId(Long id) {
+    private Recebimento buscarRecebimentoEntityPorId(Long id) {
         return recebimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Recebimento não encontrado"));
     }
 
-    public List<Recebimento> buscarTodosRecebimentos() {
-        return recebimentoRepository.findAll();
+    public RecebimentoResponseDTO buscarRecebimentoPorId(Long id) {
+        return toResponseDTO(recebimentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Recebimento não encontrado")));
+    }
+
+    public List<RecebimentoResponseDTO> buscarTodosRecebimentos() {
+        return recebimentoRepository.findAll().stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
+
+    public RecebimentoResponseDTO toResponseDTO(Recebimento recebimento) {
+        RecebimentoResponseDTO dto = new RecebimentoResponseDTO();
+        dto.setId(recebimento.getId());
+        dto.setPessoaCuidadaId(recebimento.getPessoaCuidada().getId());
+        dto.setUsuarioId(recebimento.getUsuario().getId());
+        dto.setContratoId(recebimento.getContrato().getId());
+        dto.setDescricao(recebimento.getDescricao());
+        dto.setValor(recebimento.getValor());
+        dto.setData(recebimento.getDataRecebimento());
+        dto.setComprovanteUrl(recebimento.getComprovanteUrl());
+        return dto;
     }
 }

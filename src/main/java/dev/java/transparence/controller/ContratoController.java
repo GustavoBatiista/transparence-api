@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.java.transparence.entity.Contrato;
+import dev.java.transparence.dto.ContratoRequestDTO;
+import dev.java.transparence.dto.ContratoResponseDTO;
+
 import dev.java.transparence.service.ContratoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -27,30 +30,29 @@ public class ContratoController {
     }
 
     @PostMapping
-    public ResponseEntity<Contrato> incluirContrato(@RequestParam Long usuarioId,
-            @RequestParam Long pessoaCuidadaId) {
+    public ResponseEntity<ContratoResponseDTO> incluirContrato(@RequestBody ContratoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(contratoService.incluirContrato(usuarioId, pessoaCuidadaId));
+                .body(contratoService.incluirContrato(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contrato> buscarContratoPorId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(contratoService.buscarContratoPorId(id));
+    public ResponseEntity<ContratoResponseDTO> buscarContratoPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(contratoService.buscarContratoPorId(id));
     }
 
     @PutMapping("/{id}/suspender")
-    public ResponseEntity<Contrato> suspenderContrato(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(contratoService.suspenderContrato(id));
+    public ResponseEntity<ContratoResponseDTO> suspenderContrato(@PathVariable Long id) {
+        return ResponseEntity.ok(contratoService.suspenderContrato(id));
     }
 
     @PutMapping("/{id}/encerrar")
-    public ResponseEntity<Contrato> encerrarContrato(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(contratoService.encerrarContrato(id));
+    public ResponseEntity<ContratoResponseDTO> encerrarContrato(@PathVariable Long id) {
+        return ResponseEntity.ok(contratoService.encerrarContrato(id));
     }
 
     @PutMapping("/{id}/reativar")
-    public ResponseEntity<Contrato> reativarContrato(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(contratoService.reativarContrato(id));
+    public ResponseEntity<ContratoResponseDTO> reativarContrato(@PathVariable Long id) {
+        return ResponseEntity.ok(contratoService.reativarContrato(id));
     }
 
     @DeleteMapping("/{id}")

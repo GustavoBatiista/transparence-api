@@ -1,16 +1,18 @@
 package dev.java.transparence.service;
 
-import dev.java.transparence.repository.GastoRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
-import dev.java.transparence.entity.PessoaCuidada;
-import dev.java.transparence.entity.Usuario;
+import dev.java.transparence.dto.GastoRequestDTO;
+import dev.java.transparence.dto.GastoResponseDTO;
 import dev.java.transparence.entity.Contrato;
 import dev.java.transparence.entity.Gasto;
+import dev.java.transparence.entity.PessoaCuidada;
+import dev.java.transparence.entity.Usuario;
 import dev.java.transparence.enums.StatusContrato;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
+import dev.java.transparence.repository.GastoRepository;
 
 @Service
 public class GastoService {
@@ -31,38 +33,46 @@ public class GastoService {
         this.contratoService = contratoService;
     }
 
-    public Gasto incluirGasto(Long pessoaCuidadaId, Long usuarioId, Long contratoId,
-            String descricao, BigDecimal valor,
-            LocalDate dataGasto) {
-        PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaPorId(pessoaCuidadaId);
-        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
-        Contrato contrato = contratoService.buscarContratoPorId(contratoId);
+    public GastoResponseDTO incluirGasto(GastoRequestDTO dto) {
+        PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaEntityPorId(dto.getPessoaCuidadaId());
+        Usuario usuario = usuarioService.buscarUsuarioEntityPorId(dto.getUsuarioId());
+        Contrato contrato = contratoService.buscarContratoEntityPorId(dto.getContratoId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas contratos ativos podem gastar");
         }
-        if (gastoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(pessoaCuidadaId, usuarioId,
-                dataGasto, valor)) {
+        boolean existeGasto = gastoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(
+                dto.getPessoaCuidadaId(), dto.getUsuarioId(), dto.getDataGasto(), dto.getValor());
+        if (existeGasto) {
             throw new RuntimeException("Gasto já cadastrado");
         }
-        Gasto gasto = new Gasto(pessoaCuidada, usuario, contrato, descricao, valor, dataGasto);
-        return gastoRepository.save(gasto);
+        Gasto gasto = new Gasto(pessoaCuidada, usuario, contrato,
+                dto.getDescricao(), dto.getValor(), dto.getDataGasto());
+        Gasto salvo = gastoRepository.save(gasto);
+
+        return toResponseDTO(salvo);
     }
 
-    public Gasto atualizarGasto(Long id, String descricao, BigDecimal valor,
-            LocalDate dataGasto) {
-        Gasto gastoExistente = buscarGastoPorId(id);
+    public GastoResponseDTO atualizarGasto(Long id, GastoRequestDTO dto) {
+        Gasto gastoExistente = buscarGastoEntityPorId(id);
         Contrato contrato = gastoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas gastos de contratos ativos podem ser atualizados");
         }
-        gastoExistente.setDescricao(descricao);
-        gastoExistente.setValor(valor);
-        gastoExistente.setDataGasto(dataGasto);
-        return gastoRepository.save(gastoExistente);
+
+        gastoExistente.setDescricao(dto.getDescricao());
+        gastoExistente.setValor(dto.getValor());
+        gastoExistente.setDataGasto(dto.getDataGasto());
+
+        Gasto atualizado = gastoRepository.save(gastoExistente);
+
+        return toResponseDTO(atualizado);
     }
 
     public void excluirGasto(Long id) {
-        Gasto gastoExistente = buscarGastoPorId(id);
+        Gasto gastoExistente = buscarGastoEntityPorId(id);
+        if (!gastoRepository.existsById(id)) {
+            throw new RuntimeException("Gasto não encontrado");
+        }
         Contrato contrato = gastoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
             throw new RuntimeException("Apenas gastos de contratos ativos podem ser excluídos");
@@ -70,11 +80,29 @@ public class GastoService {
         gastoRepository.deleteById(gastoExistente.getId());
     }
 
-    public Gasto buscarGastoPorId(Long id) {
+    private Gasto buscarGastoEntityPorId(Long id) {
         return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto não encontrado"));
     }
 
-    public List<Gasto> buscarTodosGastos() {
-        return gastoRepository.findAll();
+    public GastoResponseDTO buscarGastoPorId(Long id) {
+        return toResponseDTO(
+                gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto não encontrado")));
+    }
+
+    public List<GastoResponseDTO> buscarTodosGastos() {
+        return gastoRepository.findAll().stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
+
+    public GastoResponseDTO toResponseDTO(Gasto gasto) {
+        GastoResponseDTO dto = new GastoResponseDTO();
+        dto.setId(gasto.getId());
+        dto.setPessoaCuidadaId(gasto.getPessoaCuidada().getId());
+        dto.setUsuarioId(gasto.getUsuario().getId());
+        dto.setContratoId(gasto.getContrato().getId());
+        dto.setDescricao(gasto.getDescricao());
+        dto.setValor(gasto.getValor());
+        dto.setData(gasto.getDataGasto());
+        dto.setComprovanteUrl(gasto.getComprovanteUrl());
+        return dto;
     }
 }

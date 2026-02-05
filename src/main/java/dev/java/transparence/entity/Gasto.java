@@ -86,8 +86,28 @@ public class Gasto {
         this.comprovanteUrl = comprovanteUrl;
     }
 
+    public PessoaCuidada getPessoaCuidada() {
+        return pessoaCuidada;
+    }
+
+    public void setPessoaCuidada(PessoaCuidada pessoaCuidada) {
+        this.pessoaCuidada = pessoaCuidada;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Contrato getContrato() {
         return contrato;
+    }
+
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
     }
 
     @Override
