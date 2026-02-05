@@ -121,12 +121,7 @@ Após subir a aplicação, acesse:
 - Java 17 ou superior
 - Maven
 
-### Passos
 
-```bash
-git clone https://github.com/GustavoBatiista/transparence-api.git
-cd transparence-api
-mvn spring-boot:run
 
 👨‍💻 Autor
 
