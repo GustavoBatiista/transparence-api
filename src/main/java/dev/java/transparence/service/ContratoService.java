@@ -10,6 +10,8 @@ import dev.java.transparence.entity.Contrato;
 import dev.java.transparence.entity.PessoaCuidada;
 import dev.java.transparence.entity.Usuario;
 import dev.java.transparence.enums.StatusContrato;
+import dev.java.transparence.exception.BusinessException;
+import dev.java.transparence.exception.NotFoundException;
 import dev.java.transparence.repository.ContratoRepository;
 
 @Service
@@ -33,7 +35,7 @@ public class ContratoService {
         PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaEntityPorId(dto.getPessoaCuidadaId());
         if (contratoRepository.existsByUsuario_IdAndPessoaCuidada_IdAndStatus(usuario.getId(), pessoaCuidada.getId(),
                 StatusContrato.ATIVO)) {
-            throw new RuntimeException("Contrato já cadastrado");
+            throw new NotFoundException("Contrato já cadastrado");
         }
         Contrato contrato = new Contrato(usuario, pessoaCuidada, LocalDate.now());
         return toResponseDTO(contratoRepository.save(contrato));
@@ -42,7 +44,7 @@ public class ContratoService {
     public ContratoResponseDTO encerrarContrato(Long id) {
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() == StatusContrato.ENCERRADO) {
-            throw new RuntimeException("Contrato já está encerrado");
+            throw new BusinessException("Contrato já está encerrado");
         }
         contratoExistente.setStatus(StatusContrato.ENCERRADO);
         contratoExistente.setDataFim(LocalDate.now());
@@ -52,7 +54,7 @@ public class ContratoService {
     public ContratoResponseDTO suspenderContrato(Long id) {
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas contratos ativos podem ser suspensos");
+            throw new BusinessException("Apenas contratos ativos podem ser suspensos");
         }
         contratoExistente.setStatus(StatusContrato.SUSPENSO);
         return toResponseDTO(contratoRepository.save(contratoExistente));
@@ -61,7 +63,7 @@ public class ContratoService {
     public ContratoResponseDTO reativarContrato(Long id) {
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() != StatusContrato.SUSPENSO) {
-            throw new RuntimeException("Apenas contratos suspensos podem ser reativados");
+            throw new BusinessException("Apenas contratos suspensos podem ser reativados");
         }
         contratoExistente.setStatus(StatusContrato.ATIVO);
         return toResponseDTO(contratoRepository.save(contratoExistente));
@@ -69,13 +71,13 @@ public class ContratoService {
 
     public void excluirContrato(Long id) {
         if (!contratoRepository.existsById(id)) {
-            throw new RuntimeException("Contrato não encontrado");
+            throw new NotFoundException("Contrato não encontrado");
         }
         contratoRepository.deleteById(id);
     }
 
     public Contrato buscarContratoEntityPorId(Long id) {
-        return contratoRepository.findById(id).orElseThrow(() -> new RuntimeException("Contrato não encontrado"));
+        return contratoRepository.findById(id).orElseThrow(() -> new NotFoundException("Contrato não encontrado"));
     }
 
     public ContratoResponseDTO buscarContratoPorId(Long id) {

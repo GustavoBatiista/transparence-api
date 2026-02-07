@@ -12,6 +12,8 @@ import dev.java.transparence.entity.PessoaCuidada;
 import dev.java.transparence.entity.Recebimento;
 import dev.java.transparence.entity.Usuario;
 import dev.java.transparence.enums.StatusContrato;
+import dev.java.transparence.exception.BusinessException;
+import dev.java.transparence.exception.NotFoundException;
 import dev.java.transparence.repository.RecebimentoRepository;
 
 @Service
@@ -38,13 +40,13 @@ public class RecebimentoService {
         Usuario usuario = usuarioService.buscarUsuarioEntityPorId(dto.getUsuarioId());
         Contrato contrato = contratoService.buscarContratoEntityPorId(dto.getContratoId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas contratos ativos podem receber");
+            throw new BusinessException("Apenas contratos ativos podem receber");
         }
         boolean existeRecebimento = recebimentoRepository
                 .existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(dto.getPessoaCuidadaId(),
                         dto.getUsuarioId(), dto.getDataRecebimento(), dto.getValor());
         if (existeRecebimento) {
-            throw new RuntimeException("Recebimento já cadastrado");
+            throw new BusinessException("Recebimento já cadastrado");
         }
         Recebimento recebimento = new Recebimento(pessoaCuidada, usuario, contrato, dto.getDescricao(), dto.getValor(),
                 dto.getDataRecebimento());
@@ -56,7 +58,7 @@ public class RecebimentoService {
         Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
         Contrato contrato = recebimentoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas recebimentos de contratos ativos podem ser atualizados");
+            throw new BusinessException("Apenas recebimentos de contratos ativos podem ser atualizados");
         }
         recebimentoExistente.setDescricao(dto.getDescricao());
         recebimentoExistente.setValor(dto.getValor());
@@ -67,22 +69,22 @@ public class RecebimentoService {
     public void excluirRecebimento(Long id) {
         Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
         if (!recebimentoRepository.existsById(id)) {
-            throw new RuntimeException("Recebimento não encontrado");
+            throw new NotFoundException("Recebimento não encontrado");
         }
         Contrato contrato = recebimentoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas recebimentos de contratos ativos podem ser excluídos");
+            throw new BusinessException("Apenas recebimentos de contratos ativos podem ser excluídos");
         }
         recebimentoRepository.deleteById(recebimentoExistente.getId());
     }
 
     private Recebimento buscarRecebimentoEntityPorId(Long id) {
-        return recebimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Recebimento não encontrado"));
+        return recebimentoRepository.findById(id).orElseThrow(() -> new NotFoundException("Recebimento não encontrado"));
     }
 
     public RecebimentoResponseDTO buscarRecebimentoPorId(Long id) {
         return toResponseDTO(recebimentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Recebimento não encontrado")));
+                .orElseThrow(() -> new NotFoundException("Recebimento não encontrado")));
     }
 
     public List<RecebimentoResponseDTO> buscarTodosRecebimentos() {

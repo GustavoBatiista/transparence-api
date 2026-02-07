@@ -12,6 +12,8 @@ import dev.java.transparence.entity.Gasto;
 import dev.java.transparence.entity.PessoaCuidada;
 import dev.java.transparence.entity.Usuario;
 import dev.java.transparence.enums.StatusContrato;
+import dev.java.transparence.exception.BusinessException;
+import dev.java.transparence.exception.NotFoundException;
 import dev.java.transparence.repository.GastoRepository;
 
 @Service
@@ -38,12 +40,12 @@ public class GastoService {
         Usuario usuario = usuarioService.buscarUsuarioEntityPorId(dto.getUsuarioId());
         Contrato contrato = contratoService.buscarContratoEntityPorId(dto.getContratoId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas contratos ativos podem gastar");
+            throw new BusinessException("Apenas contratos ativos podem gastar");
         }
         boolean existeGasto = gastoRepository.existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(
                 dto.getPessoaCuidadaId(), dto.getUsuarioId(), dto.getDataGasto(), dto.getValor());
         if (existeGasto) {
-            throw new RuntimeException("Gasto já cadastrado");
+            throw new BusinessException("Gasto já cadastrado");
         }
         Gasto gasto = new Gasto(pessoaCuidada, usuario, contrato,
                 dto.getDescricao(), dto.getValor(), dto.getDataGasto());
@@ -56,7 +58,7 @@ public class GastoService {
         Gasto gastoExistente = buscarGastoEntityPorId(id);
         Contrato contrato = gastoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas gastos de contratos ativos podem ser atualizados");
+            throw new BusinessException("Apenas gastos de contratos ativos podem ser atualizados");
         }
 
         gastoExistente.setDescricao(dto.getDescricao());
@@ -71,22 +73,22 @@ public class GastoService {
     public void excluirGasto(Long id) {
         Gasto gastoExistente = buscarGastoEntityPorId(id);
         if (!gastoRepository.existsById(id)) {
-            throw new RuntimeException("Gasto não encontrado");
+            throw new NotFoundException("Gasto não encontrado");
         }
         Contrato contrato = gastoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            throw new RuntimeException("Apenas gastos de contratos ativos podem ser excluídos");
+            throw new BusinessException("Apenas gastos de contratos ativos podem ser excluídos");
         }
         gastoRepository.deleteById(gastoExistente.getId());
     }
 
     private Gasto buscarGastoEntityPorId(Long id) {
-        return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto não encontrado"));
+        return gastoRepository.findById(id).orElseThrow(() -> new NotFoundException("Gasto não encontrado"));
     }
 
     public GastoResponseDTO buscarGastoPorId(Long id) {
         return toResponseDTO(
-                gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto não encontrado")));
+                gastoRepository.findById(id).orElseThrow(() -> new NotFoundException("Gasto não encontrado")));
     }
 
     public List<GastoResponseDTO> buscarTodosGastos() {

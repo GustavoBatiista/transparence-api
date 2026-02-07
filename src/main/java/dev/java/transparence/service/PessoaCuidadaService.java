@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import dev.java.transparence.dto.PessoaCuidadaRequestDTO;
 import dev.java.transparence.dto.PessoaCuidadaResponseDTO;
 import dev.java.transparence.entity.PessoaCuidada;
+import dev.java.transparence.exception.BusinessException;
+import dev.java.transparence.exception.NotFoundException;
 import dev.java.transparence.repository.PessoaCuidadaRepository;
 
 @Service
@@ -18,7 +20,7 @@ public class PessoaCuidadaService {
 
     public PessoaCuidadaResponseDTO incluirPessoaCuidada(PessoaCuidadaRequestDTO dto) {
         if (pessoaCuidadaRepository.existsByCpf(dto.getCpf())) {
-            throw new RuntimeException("CPF já cadastrado");
+            throw new BusinessException("CPF já cadastrado");
         }
         PessoaCuidada pessoaCuidada = new PessoaCuidada(dto.getCpf(), dto.getNome(), dto.getTelefone(),
                 dto.getEndereco(), dto.getCidade(), dto.getEstado(), dto.getCep());
@@ -40,14 +42,14 @@ public class PessoaCuidadaService {
 
     public void excluirPessoaCuidada(Long id) {
         if (!pessoaCuidadaRepository.existsById(id)) {
-            throw new RuntimeException("Pessoa Cuidada não encontrada");
+            throw new NotFoundException("Pessoa Cuidada não encontrada");
         }
         pessoaCuidadaRepository.deleteById(id);
     }
 
     public PessoaCuidada buscarPessoaCuidadaEntityPorId(Long id) {
         return pessoaCuidadaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa Cuidada não encontrada"));
+                .orElseThrow(() -> new NotFoundException("Pessoa Cuidada não encontrada"));
     }
 
     public PessoaCuidadaResponseDTO buscarPessoaCuidadaPorId(Long id) {

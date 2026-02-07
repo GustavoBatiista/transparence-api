@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import dev.java.transparence.dto.UsuarioRequestDTO;
 import dev.java.transparence.dto.UsuarioResponseDTO;
 import dev.java.transparence.entity.Usuario;
+import dev.java.transparence.exception.BusinessException;
+import dev.java.transparence.exception.NotFoundException;
 import dev.java.transparence.repository.UsuarioRepository;
 
 @Service
@@ -18,10 +20,10 @@ public class UsuarioService {
 
     public UsuarioResponseDTO incluirUsuario(UsuarioRequestDTO dto) {
         if (usuarioRepository.existsByCpf(dto.getCpf())) {
-            throw new RuntimeException("CPF já cadastrado");
+            throw new BusinessException("CPF já cadastrado");
         }
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new BusinessException("Email já cadastrado");
         }
 
         Usuario usuario = new Usuario(dto.getCpf(), dto.getNome(), dto.getEmail(), dto.getSenha(),
@@ -34,7 +36,7 @@ public class UsuarioService {
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO dto) {
         Usuario existente = buscarUsuarioEntityPorId(id);
         if (usuarioRepository.existsByEmail(dto.getEmail()) && !existente.getEmail().equals(dto.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new BusinessException("Email já cadastrado");
         }
         existente.setNome(dto.getNome());
         existente.setEmail(dto.getEmail());
@@ -48,18 +50,18 @@ public class UsuarioService {
 
     public void excluirUsuario(Long id) {
         if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new NotFoundException("Usuário não encontrado");
         }
         usuarioRepository.deleteById(id);
     }
 
     public Usuario buscarUsuarioEntityPorId(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
         return toResponseDTO(buscarUsuarioEntityPorId(id));
-                
+
     }
 
     public UsuarioResponseDTO toResponseDTO(Usuario usuario) {
