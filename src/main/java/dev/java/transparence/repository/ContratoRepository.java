@@ -9,7 +9,7 @@ import dev.java.transparence.enums.StatusContrato;
 @Repository
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
 
-    public Boolean existsByUsuario_IdAndPessoaCuidada_IdAndStatus(
+    public boolean existsByUsuario_IdAndPessoaCuidada_IdAndStatus(
         Long usuarioId,
         Long pessoaCuidadaId,
         StatusContrato status

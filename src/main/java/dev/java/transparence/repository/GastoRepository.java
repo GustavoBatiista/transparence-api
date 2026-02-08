@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface GastoRepository extends JpaRepository<Gasto, Long> {
-    public Boolean existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(
+    public boolean existsByPessoaCuidada_IdAndUsuario_IdAndDataGastoAndValor(
             Long pessoaCuidadaId,
             Long usuarioId,
             LocalDate dataGasto,

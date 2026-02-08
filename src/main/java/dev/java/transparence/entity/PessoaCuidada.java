@@ -2,19 +2,22 @@ package dev.java.transparence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "pessoa_cuidada")
+@Table(name = "pessoa_cuidada", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_pessoa_cuidada_cpf", columnNames = "cpf")
+})
 public class PessoaCuidada {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "cpf", nullable = false, unique = true, length = 11)
+    @Column(name = "cpf", nullable = false, length = 11)
     private String cpf;
     @Column(name = "nome", nullable = false)
     private String nome;

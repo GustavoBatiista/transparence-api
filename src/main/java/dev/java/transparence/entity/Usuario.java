@@ -1,24 +1,28 @@
 package dev.java.transparence.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_usuario_cpf", columnNames = "cpf"),
+        @UniqueConstraint(name = "uk_usuario_email", columnNames = "email")
+})
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "cpf", nullable = false, unique = true, length = 11)
+    @Column(name = "cpf", nullable = false, length = 11)
     private String cpf;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
     @Column(nullable = false)
     private String senha;
@@ -38,7 +42,7 @@ public class Usuario {
 
     public Usuario(String cpf, String nome, String email, String senha, String telefone, String endereco,
             String cidade, String estado, String cep) {
-        
+
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
@@ -50,12 +54,9 @@ public class Usuario {
         this.cep = cep;
     }
 
-    
-
     public Long getId() {
         return id;
     }
-
 
     public String getCpf() {
         return cpf;
@@ -155,6 +156,5 @@ public class Usuario {
         return "Usuario [id=" + id + ", cpf=" + cpf + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone
                 + ", endereco=" + endereco + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + "]";
     }
-
 
 }

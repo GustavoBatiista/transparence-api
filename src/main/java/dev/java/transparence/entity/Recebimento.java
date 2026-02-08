@@ -5,16 +5,23 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "recebimento")
+@Table(name = "recebimento", indexes = {
+        @Index(name = "idx_recebimento_usuario", columnList = "usuario_id"),
+        @Index(name = "idx_recebimento_pessoa_cuidada", columnList = "pessoa_cuidada_id"),
+        @Index(name = "idx_recebimento_contrato", columnList = "contrato_id"),
+        @Index(name = "idx_recebimento_validacao", columnList = "pessoa_cuidada_id, usuario_id, data_recebimento, valor_recebimento")
+})
 public class Recebimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +34,16 @@ public class Recebimento {
     private LocalDate dataRecebimento;
     @Column(name = "comprovante_url")
     private String comprovanteUrl;
-    @ManyToOne
-    @JoinColumn(name = "pessoa_cuidada_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pessoa_cuidada_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_pessoa_cuidada"))
     private PessoaCuidada pessoaCuidada;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_usuario"))
     private Usuario usuario;
-    @ManyToOne
-    @JoinColumn(name = "contrato_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contrato_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_contrato"))
     private Contrato contrato;
+
     public Recebimento() {
     }
 
@@ -132,9 +140,10 @@ public class Recebimento {
 
     @Override
     public String toString() {
-        return "Recebimento [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", dataRecebimento=" + dataRecebimento
-                + ", comprovanteUrl=" + comprovanteUrl + ", pessoaCuidada=" + pessoaCuidada + ", usuario=" + usuario
-                + ", contrato=" + contrato + "]";
+        return "Recebimento [id=" + id +
+                ", descricao=" + descricao +
+                ", valor=" + valor +
+                ", dataRecebimento=" + dataRecebimento +
+                ", comprovanteUrl=" + comprovanteUrl + "]";
     }
-
 }

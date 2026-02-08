@@ -5,15 +5,23 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "gasto")
+@Table(name = "gasto", indexes = {
+        @Index(name = "idx_gasto_usuario", columnList = "usuario_id"),
+        @Index(name = "idx_gasto_pessoa_cuidada", columnList = "pessoa_cuidada_id"),
+        @Index(name = "idx_gasto_contrato", columnList = "contrato_id"),
+        @Index(name = "idx_gasto_validacao", columnList = "pessoa_cuidada_id, usuario_id, data_gasto, valor_gasto")
+})
 public class Gasto {
 
     @Id
@@ -27,14 +35,14 @@ public class Gasto {
     private LocalDate dataGasto;
     @Column(name = "comprovante_url")
     private String comprovanteUrl;
-    @ManyToOne
-    @JoinColumn(name = "pessoa_cuidada_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pessoa_cuidada_id", nullable = false, foreignKey = @ForeignKey(name = "fk_gasto_pessoa_cuidada"))
     private PessoaCuidada pessoaCuidada;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_gasto_usuario"))
     private Usuario usuario;
-    @ManyToOne
-    @JoinColumn(name = "contrato_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contrato_id", nullable = false, foreignKey = @ForeignKey(name = "fk_gasto_contrato"))
     private Contrato contrato;
 
     public Gasto() {

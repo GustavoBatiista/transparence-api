@@ -3,29 +3,36 @@ package dev.java.transparence.entity;
 import java.time.LocalDate;
 
 import dev.java.transparence.enums.StatusContrato;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "contrato")
-public class Contrato  {
+@Table(name = "contrato", indexes = {
+        @Index(name = "idx_contrato_usuario", columnList = "usuario_id"),
+        @Index(name = "idx_contrato_pessoa_cuidada", columnList = "pessoa_cuidada_id"),
+        @Index(name = "idx_contrato_validacao", columnList = "pessoa_cuidada_id, usuario_id,status")
+})
+public class Contrato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_contrato_usuario"))
     private Usuario usuario;
-    @ManyToOne
-    @JoinColumn(name = "pessoa_cuidada_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pessoa_cuidada_id", nullable = false, foreignKey = @ForeignKey(name = "fk_contrato_pessoaCuidada"))
     private PessoaCuidada pessoaCuidada;
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
@@ -120,8 +127,10 @@ public class Contrato  {
 
     @Override
     public String toString() {
-        return "Contrato [id=" + id + ", usuario=" + usuario + ", pessoaCuidada=" + pessoaCuidada + ", dataInicio="
-                + dataInicio + ", dataFim=" + dataFim + ", status=" + status + "]";
+        return "Contrato [id=" + id +
+                ", dataInicio=" + dataInicio +
+                ", dataFim=" + dataFim +
+                ", status=" + status + "]";
     }
 
 }
