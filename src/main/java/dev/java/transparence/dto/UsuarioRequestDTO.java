@@ -2,7 +2,6 @@ package dev.java.transparence.dto;
 
 public class UsuarioRequestDTO {
 
-    private Long id;
     private String nome;
     private String email;
     private String senha;
@@ -12,14 +11,6 @@ public class UsuarioRequestDTO {
     private String estado;
     private String cep;
     private String cpf;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
