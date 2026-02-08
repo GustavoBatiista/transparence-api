@@ -8,12 +8,18 @@ public class ApiErrorResponse {
     private int status;
     private String error;
     private String path;
+    private String traceId;
 
-    public ApiErrorResponse(int status, String error, String path) {
+    public ApiErrorResponse(
+            int status,
+            String error,
+            String path,
+            String traceId) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
         this.error = error;
         this.path = path;
+        this.traceId = traceId;
     }
 
     public LocalDateTime getTimestamp() {
@@ -30,5 +36,9 @@ public class ApiErrorResponse {
 
     public String getPath() {
         return path;
+    }
+
+    public String getTraceId() {
+        return traceId;
     }
 }
