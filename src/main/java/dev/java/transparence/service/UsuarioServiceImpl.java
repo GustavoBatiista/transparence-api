@@ -74,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         log.info("Usuário excluído com sucesso. UsuarioId={}", id);
     }
 
-    
+    @Override
     public Usuario buscarUsuarioParaContrato(Long id) {
         log.debug("Buscando usuário da base de dados por UsuarioId={}", id);
         return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));

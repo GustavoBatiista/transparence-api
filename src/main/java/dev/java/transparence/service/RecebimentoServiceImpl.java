@@ -95,6 +95,7 @@ public class RecebimentoServiceImpl implements RecebimentoService {
         return toResponseDTO(buscarRecebimentoEntityPorId(id));
     }
 
+    @Override
     public List<RecebimentoResponseDTO> buscarTodosRecebimentos() {
         log.info("Buscando todos os recebimentos cadastrados.");
         return recebimentoRepository.findAll().stream().map(this::toResponseDTO).collect(Collectors.toList());

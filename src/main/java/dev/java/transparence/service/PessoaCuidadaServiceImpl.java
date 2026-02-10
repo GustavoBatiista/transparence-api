@@ -65,6 +65,7 @@ public class PessoaCuidadaServiceImpl implements PessoaCuidadaService {
     }
 
 
+    @Override
     public PessoaCuidada buscarPessoaCuidadaParaContrato(Long id) {
         log.debug("Buscando pessoa cuidada da base de dados por PessoaCuidadaId={}", id);
         return pessoaCuidadaRepository.findById(id)

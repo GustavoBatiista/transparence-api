@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "gasto", indexes = {
         @Index(name = "idx_gasto_contrato", columnList = "contrato_id"),
-        @Index(name = "idx_gasto_validacao", columnList = "pessoa_cuidada_id, usuario_id, data_gasto, valor_gasto")
+        @Index(name = "idx_gasto_validacao", columnList = "contrato_id, data_gasto, valor_gasto")
 })
 public class Gasto {
 

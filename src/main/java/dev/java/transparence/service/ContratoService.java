@@ -7,6 +7,8 @@ import dev.java.transparence.entity.Contrato;
 
 public interface ContratoService {
 
+    Contrato buscarContratoParaOperacoes(Long contratoId);
+
     public ContratoResponseDTO incluirContrato(ContratoRequestDTO dto);
 
     public ContratoResponseDTO encerrarContrato(Long id);
