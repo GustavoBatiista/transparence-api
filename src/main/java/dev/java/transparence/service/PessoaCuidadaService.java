@@ -22,7 +22,7 @@ public class PessoaCuidadaService {
     }
 
     public PessoaCuidadaResponseDTO incluirPessoaCuidada(PessoaCuidadaRequestDTO dto) {
-        log.info("Iniciando criação de pessoa cuidada.");
+        log.debug("Iniciando criação de pessoa cuidada. CPF={}", dto.getCpf());
         if (pessoaCuidadaRepository.existsByCpf(dto.getCpf())) {
             log.warn("Tentativa de criar uma pessoa cuidada com CPF já existente.");
             throw new BusinessException("CPF já cadastrado");
@@ -30,12 +30,13 @@ public class PessoaCuidadaService {
         PessoaCuidada pessoaCuidada = new PessoaCuidada(dto.getCpf(), dto.getNome(), dto.getTelefone(),
                 dto.getEndereco(), dto.getCidade(), dto.getEstado(), dto.getCep());
         PessoaCuidada salvo = pessoaCuidadaRepository.save(pessoaCuidada);
-        log.info("Pessoa cuidada criada com sucesso. Id={}", salvo.getId());
+        log.info("Pessoa cuidada criada com sucesso. PessoaCuidadaId={}", salvo.getId());
         return toResponseDTO(salvo);
     }
 
+    // TODO: separar DTO de criação e atualização futuramente 09/02/2026
     public PessoaCuidadaResponseDTO atualizarPessoaCuidada(Long id, PessoaCuidadaRequestDTO dto) {
-        log.info("Iniciando atualização de pessoa cuidada. Id={}", id);
+        log.info("Iniciando atualização de pessoa cuidada. PessoaCuidadaId={}", id);
         PessoaCuidada existente = buscarPessoaCuidadaEntityPorId(id);
         existente.setNome(dto.getNome());
         existente.setTelefone(dto.getTelefone());
@@ -45,34 +46,34 @@ public class PessoaCuidadaService {
         existente.setCep(dto.getCep());
 
         PessoaCuidada salvo = pessoaCuidadaRepository.save(existente);
-        log.info("Pessoa cuidada atualizada com sucesso. Id={}", salvo.getId());
+        log.info("Pessoa cuidada atualizada com sucesso. PessoaCuidadaId={}", salvo.getId());
         return toResponseDTO(salvo);
 
     }
 
     public void excluirPessoaCuidada(Long id) {
-        log.info("Iniciando exclusão de pessoa cuidada. Id={}", id);
+        log.info("Iniciando exclusão de pessoa cuidada. PessoaCuidadaId={}", id);
         if (!pessoaCuidadaRepository.existsById(id)) {
-            log.warn("Tentativa de excluir uma pessoa cuidada não existente. Id={}", id);
+            log.warn("Tentativa de excluir uma pessoa cuidada não existente. PessoaCuidadaId={}", id);
             throw new NotFoundException("Pessoa Cuidada não encontrada");
         }
-        log.info("Pessoa cuidada excluída com sucesso. Id={}", id);
         pessoaCuidadaRepository.deleteById(id);
+        log.info("Pessoa cuidada excluída com sucesso. PessoaCuidadaId={}", id);
     }
 
     public PessoaCuidada buscarPessoaCuidadaEntityPorId(Long id) {
-        log.debug("Buscando pessoa cuidada da base de dados por Id={}", id);
+        log.debug("Buscando pessoa cuidada da base de dados por PessoaCuidadaId={}", id);
         return pessoaCuidadaRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Pessoa Cuidada não encontrada"));
     }
 
     public PessoaCuidadaResponseDTO buscarPessoaCuidadaPorId(Long id) {
-        log.info("Buscando pessoa cuidada por Id={}", id);
+        log.info("Buscando pessoa cuidada por PessoaCuidadaId={}", id);
         return toResponseDTO(buscarPessoaCuidadaEntityPorId(id));
     }
 
     public PessoaCuidadaResponseDTO toResponseDTO(PessoaCuidada pessoaCuidada) {
-        log.debug("Convertendo pessoa cuidada para DTO. Id={}", pessoaCuidada.getId());
+        log.debug("Convertendo pessoa cuidada para DTO. PessoaCuidadaId={}", pessoaCuidada.getId());
         PessoaCuidadaResponseDTO dto = new PessoaCuidadaResponseDTO();
         dto.setId(pessoaCuidada.getId());
         dto.setCpf(pessoaCuidada.getCpf());

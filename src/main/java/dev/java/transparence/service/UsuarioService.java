@@ -23,13 +23,13 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO incluirUsuario(UsuarioRequestDTO dto) {
-        log.info("Iniciando criação de usuário.");
+        log.debug("Iniciando criação de usuário. CPF={}, Email={}", dto.getCpf(), dto.getEmail());
         if (usuarioRepository.existsByCpf(dto.getCpf())) {
-            log.warn("Tentativa de criar um usuário com CPF já existente.");
+            log.warn("Tentativa de criar um usuário com CPF já existente. CPF={}", dto.getCpf());
             throw new BusinessException("CPF já cadastrado");
         }
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            log.warn("Tentativa de criar um usuário com Email já existente.");
+            log.warn("Tentativa de criar um usuário com Email já existente. Email={}", dto.getEmail());
             throw new BusinessException("Email já cadastrado");
         }
 
@@ -38,15 +38,16 @@ public class UsuarioService {
                 dto.getCep());
 
         Usuario salvo = usuarioRepository.save(usuario);
-        log.info("Usuário criado com sucesso. Id={}", salvo.getId());
+        log.info("Usuário criado com sucesso. UsuarioId={}", salvo.getId());
         return toResponseDTO(salvo);
     }
 
+    // TODO: separar DTO de criação e atualização futuramente 09/02/2026
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO dto) {
-        log.info("Iniciando atualização de usuário. Id={}", id);
+        log.info("Iniciando atualização de usuário. UsuarioId={}", id);
         Usuario existente = buscarUsuarioEntityPorId(id);
         if (usuarioRepository.existsByEmail(dto.getEmail()) && !existente.getEmail().equals(dto.getEmail())) {
-            log.warn("Tentativa de atualizar um usuário com Email já existente.");
+            log.warn("Tentativa de atualizar um usuário com Email já existente. Email={}", dto.getEmail());
             throw new BusinessException("Email já cadastrado");
         }
         existente.setNome(dto.getNome());
@@ -56,33 +57,33 @@ public class UsuarioService {
         existente.setCidade(dto.getCidade());
         existente.setEstado(dto.getEstado());
         existente.setCep(dto.getCep());
-        log.info("Usuário atualizado com sucesso. Id={}", id);
+        log.info("Usuário atualizado com sucesso. UsuarioId={}", id);
         return toResponseDTO(usuarioRepository.save(existente));
     }
 
     public void excluirUsuario(Long id) {
-        log.info("Iniciando exclusão de usuário. Id={}", id);
+        log.info("Iniciando exclusão de usuário. UsuarioId={}", id);
         if (!usuarioRepository.existsById(id)) {
-            log.warn("Tentativa de excluir um usuário não existente. Id={}", id);
+            log.warn("Tentativa de excluir um usuário não existente. UsuarioId={}", id);
             throw new NotFoundException("Usuário não encontrado");
         }
-        log.info("Usuário excluído com sucesso. Id={}", id);
         usuarioRepository.deleteById(id);
+        log.info("Usuário excluído com sucesso. UsuarioId={}", id);
     }
 
     public Usuario buscarUsuarioEntityPorId(Long id) {
-        log.debug("Buscando usuário da base de dados por Id={}", id);
+        log.debug("Buscando usuário da base de dados por UsuarioId={}", id);
         return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
-        log.info("Buscando usuário por Id={}", id);
+        log.info("Buscando usuário por UsuarioId={}", id);
         return toResponseDTO(buscarUsuarioEntityPorId(id));
 
     }
 
     public UsuarioResponseDTO toResponseDTO(Usuario usuario) {
-        log.debug("Convertendo usuário para DTO. Id={}", usuario.getId());
+        log.debug("Convertendo usuário para DTO. UsuarioId={}", usuario.getId());
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
         dto.setId(usuario.getId());
         dto.setCpf(usuario.getCpf());

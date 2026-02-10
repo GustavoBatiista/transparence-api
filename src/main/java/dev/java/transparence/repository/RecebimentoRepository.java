@@ -11,10 +11,8 @@ import java.time.LocalDate;
 @Repository
 public interface RecebimentoRepository extends JpaRepository<Recebimento, Long> {
 
-    public boolean existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(
-        Long pessoaCuidadaId,
-        Long usuarioId,
-        LocalDate dataRecebimento,
-        BigDecimal valor
-    );
+    public boolean existsByContrato_IdAndDataRecebimentoAndValor(
+            Long contratoId,
+            LocalDate dataRecebimento,
+            BigDecimal valor);
 }

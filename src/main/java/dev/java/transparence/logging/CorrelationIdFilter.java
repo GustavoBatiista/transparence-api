@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CorrelationIdFilter extends OncePerRequestFilter {
 
-    public static final String CORRELATION_ID = "correlationId";
-    public static final String CORRELATION_HEADER = "X-Correlation-Id";
+    public static final String TRACE_ID = "traceId";
+    public static final String TRACE_HEADER = "X-Trace-Id";
 
     @Override
     protected void doFilterInternal(
@@ -25,19 +25,19 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String correlationId = request.getHeader(CORRELATION_HEADER);
+        String traceId = request.getHeader(TRACE_HEADER);
 
-        if (correlationId == null || correlationId.isBlank()) {
-            correlationId = UUID.randomUUID().toString();
+        if (traceId == null || traceId.isBlank()) {
+            traceId = UUID.randomUUID().toString();
         }
 
-        MDC.put(CORRELATION_ID, correlationId);
-        response.setHeader(CORRELATION_HEADER, correlationId);
+        MDC.put(TRACE_ID, traceId);
+        response.setHeader(TRACE_HEADER, traceId);
 
         try {
             filterChain.doFilter(request, response);
         } finally {
-            MDC.remove(CORRELATION_ID);
+            MDC.remove(TRACE_ID);
         }
     }
 }

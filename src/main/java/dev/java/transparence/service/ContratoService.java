@@ -48,70 +48,70 @@ public class ContratoService {
         }
         Contrato contrato = new Contrato(usuario, pessoaCuidada, LocalDate.now());
         Contrato salvo = contratoRepository.save(contrato);
-        log.info("Contrato criado com sucesso. Id={}", salvo.getId());
+        log.info("Contrato criado com sucesso. ContratoId={} | status={}", salvo.getId(), salvo.getStatus());
         return toResponseDTO(salvo);
 
     }
 
     public ContratoResponseDTO encerrarContrato(Long id) {
-        log.info("Iniciando encerramento de contrato. Id={}", id);
+        log.info("Iniciando encerramento de contrato. ContratoId={}", id);
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() == StatusContrato.ENCERRADO) {
-            log.warn("Tentativa de encerrar um contrato já encerrado. Id={}", id);
+            log.warn("Tentativa de encerrar um contrato já encerrado. ContratoId={}", id);
             throw new BusinessException("Contrato já está encerrado");
         }
         contratoExistente.setStatus(StatusContrato.ENCERRADO);
         contratoExistente.setDataFim(LocalDate.now());
-        log.info("Contrato encerrado com sucesso.");
+        log.info("Contrato encerrado com sucesso. ContratoId={}", id);
         return toResponseDTO(contratoRepository.save(contratoExistente));
     }
 
     public ContratoResponseDTO suspenderContrato(Long id) {
-        log.info("Iniciando suspensão de contrato. Id={}", id);
+        log.info("Iniciando suspensão de contrato. ContratoId={}", id);
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() != StatusContrato.ATIVO) {
-            log.warn("Tentativa de suspender um contrato não ativo. Id={}", id);
+            log.warn("Tentativa de suspender um contrato não ativo. ContratoId={}", id);
             throw new BusinessException("Apenas contratos ativos podem ser suspensos");
         }
         contratoExistente.setStatus(StatusContrato.SUSPENSO);
-        log.info("Contrato suspenso com sucesso.");
+        log.info("Contrato suspenso com sucesso. ContratoId={}", id);
         return toResponseDTO(contratoRepository.save(contratoExistente));
     }
 
     public ContratoResponseDTO reativarContrato(Long id) {
-        log.info("Iniciando reativação de contrato. Id={}", id);
+        log.info("Iniciando reativação de contrato. ContratoId={}", id);
         Contrato contratoExistente = buscarContratoEntityPorId(id);
         if (contratoExistente.getStatus() != StatusContrato.SUSPENSO) {
-            log.warn("Tentativa de reativar um contrato não suspenso.");
+            log.warn("Tentativa de reativar um contrato não suspenso. ContratoId={}", id);
             throw new BusinessException("Apenas contratos suspensos podem ser reativados");
         }
         contratoExistente.setStatus(StatusContrato.ATIVO);
-        log.info("Contrato reativado com sucesso.");
+        log.info("Contrato reativado com sucesso. ContratoId={}", id);
         return toResponseDTO(contratoRepository.save(contratoExistente));
     }
 
     public void excluirContrato(Long id) {
-        log.info("Iniciando exclusão de contrato. Id={}", id);
+        log.info("Iniciando exclusão de contrato. ContratoId={}", id);
         if (!contratoRepository.existsById(id)) {
-            log.warn("Tentativa de excluir um contrato não existente. Id={}", id);
+            log.warn("Tentativa de excluir um contrato não existente. ContratoId={}", id);
             throw new NotFoundException("Contrato não encontrado");
         }
-        log.info("Contrato excluído com sucesso. Id={}", id);
         contratoRepository.deleteById(id);
+        log.info("Contrato excluído com sucesso. ContratoId={}", id);
     }
 
     public Contrato buscarContratoEntityPorId(Long id) {
-        log.debug("Buscando contrato da base de dados por Id={}", id);
+        log.debug("Buscando contrato da base de dados por ContratoId={}", id);
         return contratoRepository.findById(id).orElseThrow(() -> new NotFoundException("Contrato não encontrado"));
     }
 
     public ContratoResponseDTO buscarContratoPorId(Long id) {
-        log.info("Buscando contrato por Id={}", id);
+        log.info("Buscando contrato por ContratoId={}", id);
         return toResponseDTO(buscarContratoEntityPorId(id));
     }
 
     public ContratoResponseDTO toResponseDTO(Contrato contrato) {
-        log.debug("Convertendo contrato para DTO. Id={}", contrato.getId());
+        log.debug("Convertendo contrato para DTO. ContratoId={}", contrato.getId());
         ContratoResponseDTO dto = new ContratoResponseDTO();
         dto.setId(contrato.getId());
         dto.setUsuarioId(contrato.getUsuario().getId());

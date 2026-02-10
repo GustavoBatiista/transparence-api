@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
                                 HttpStatus.NOT_FOUND.value(),
                                 ex.getMessage(),
                                 request.getRequestURI(),
-                                MDC.get(CorrelationIdFilter.CORRELATION_ID));
+                                MDC.get(CorrelationIdFilter.TRACE_ID));
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
                                 HttpStatus.BAD_REQUEST.value(),
                                 ex.getMessage(),
                                 request.getRequestURI(),
-                                MDC.get(CorrelationIdFilter.CORRELATION_ID));
+                                MDC.get(CorrelationIdFilter.TRACE_ID));
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
                                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                 "Erro interno no servidor",
                                 request.getRequestURI(),
-                                MDC.get(CorrelationIdFilter.CORRELATION_ID));
+                                MDC.get(CorrelationIdFilter.TRACE_ID));
 
                 return ResponseEntity
                                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

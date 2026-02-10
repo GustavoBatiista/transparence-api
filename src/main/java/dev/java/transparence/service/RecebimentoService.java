@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import dev.java.transparence.dto.RecebimentoRequestDTO;
 import dev.java.transparence.dto.RecebimentoResponseDTO;
 import dev.java.transparence.entity.Contrato;
-import dev.java.transparence.entity.PessoaCuidada;
 import dev.java.transparence.entity.Recebimento;
-import dev.java.transparence.entity.Usuario;
 import dev.java.transparence.enums.StatusContrato;
 import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.NotFoundException;
@@ -25,49 +23,40 @@ public class RecebimentoService {
 
     private RecebimentoRepository recebimentoRepository;
 
-    private PessoaCuidadaService pessoaCuidadaService;
-
-    private UsuarioService usuarioService;
-
     private ContratoService contratoService;
 
-    public RecebimentoService(RecebimentoRepository recebimentoRepository, PessoaCuidadaService pessoaCuidadaService,
-            UsuarioService usuarioService, ContratoService contratoService) {
+    public RecebimentoService(RecebimentoRepository recebimentoRepository, ContratoService contratoService) {
         this.recebimentoRepository = recebimentoRepository;
-        this.pessoaCuidadaService = pessoaCuidadaService;
-        this.usuarioService = usuarioService;
         this.contratoService = contratoService;
     }
 
     public RecebimentoResponseDTO incluirRecebimento(RecebimentoRequestDTO dto) {
-        log.info("Iniciando criação de recebimento.");
-        PessoaCuidada pessoaCuidada = pessoaCuidadaService.buscarPessoaCuidadaEntityPorId(dto.getPessoaCuidadaId());
-        Usuario usuario = usuarioService.buscarUsuarioEntityPorId(dto.getUsuarioId());
+        log.info("Iniciando criação de recebimento. ContratoId={}", dto.getContratoId());
         Contrato contrato = contratoService.buscarContratoEntityPorId(dto.getContratoId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            log.warn("Tentativa de criar um recebimento em um contrato não ativo.");
+            log.warn("Tentativa de criar um recebimento em um contrato não ativo. Id={}", dto.getContratoId());
             throw new BusinessException("Apenas contratos ativos podem receber");
         }
         boolean existeRecebimento = recebimentoRepository
-                .existsByPessoaCuidada_IdAndUsuario_IdAndDataRecebimentoAndValor(dto.getPessoaCuidadaId(),
-                        dto.getUsuarioId(), dto.getDataRecebimento(), dto.getValor());
+                .existsByContrato_IdAndDataRecebimentoAndValor(dto.getContratoId(), dto.getDataRecebimento(),
+                        dto.getValor());
         if (existeRecebimento) {
-            log.warn("Tentativa de criar um recebimento já existente.");
+            log.warn("Tentativa de criar um recebimento já existente. ContratoId={}", dto.getContratoId());
             throw new BusinessException("Recebimento já cadastrado");
         }
-        Recebimento recebimento = new Recebimento(pessoaCuidada, usuario, contrato, dto.getDescricao(), dto.getValor(),
+        Recebimento recebimento = new Recebimento(contrato, dto.getDescricao(), dto.getValor(),
                 dto.getDataRecebimento());
         Recebimento salvo = recebimentoRepository.save(recebimento);
-        log.info("Recebimento criado com sucesso. Id={}", salvo.getId());
+        log.info("Recebimento criado com sucesso. RecebimentoId={} | ContratoId={}", salvo.getId(), dto.getContratoId());
         return toResponseDTO(salvo);
     }
 
     public RecebimentoResponseDTO atualizarRecebimento(Long id, RecebimentoRequestDTO dto) {
-        log.info("Iniciando atualização de recebimento. Id={}", id);
         Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
         Contrato contrato = recebimentoExistente.getContrato();
+        log.info("Iniciando atualização de recebimento. RecebimentoId={} | ContratoId={}", id, contrato.getId());
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            log.warn("Tentativa de atualizar um recebimento em um contrato não ativo. Id={}", id);
+            log.warn("Tentativa de atualizar um recebimento em um contrato não ativo. ContratoId={} | status={}", contrato.getId(), contrato.getStatus());
             throw new BusinessException("Apenas recebimentos de contratos ativos podem ser atualizados");
         }
         recebimentoExistente.setDescricao(dto.getDescricao());
@@ -75,43 +64,44 @@ public class RecebimentoService {
         recebimentoExistente.setDataRecebimento(dto.getDataRecebimento());
 
         Recebimento atualizado = recebimentoRepository.save(recebimentoExistente);
-        log.info("Recebimento atualizado com sucesso. Id={}", atualizado.getId());
+        log.info("Recebimento atualizado com sucesso. RecebimentoId={} | ContratoId={}", atualizado.getId(), atualizado.getContrato().getId());
         return toResponseDTO(atualizado);
     }
 
     public void excluirRecebimento(Long id) {
-        log.info("Iniciando exclusão de recebimento. Id={}", id);
+        log.info("Iniciando exclusão de recebimento. RecebimentoId={}", id);
         Recebimento recebimentoExistente = buscarRecebimentoEntityPorId(id);
         Contrato contrato = recebimentoExistente.getContrato();
         if (contrato.getStatus() != StatusContrato.ATIVO) {
-            log.warn("Tentativa de excluir um recebimento em um contrato não ativo. Id={}", id);
+            log.warn("Tentativa de excluir um recebimento em um contrato não ativo. ContratoId={} | status={}", contrato.getId(), contrato.getStatus());
             throw new BusinessException("Apenas recebimentos de contratos ativos podem ser excluídos");
         }
         recebimentoRepository.deleteById(recebimentoExistente.getId());
+        log.info("Recebimento excluído com sucesso. RecebimentoId={} | ContratoId={}", id, contrato.getId());
     }
 
     private Recebimento buscarRecebimentoEntityPorId(Long id) {
-        log.debug("Buscando recebimento da base de dados por Id={}", id);
+        log.debug("Buscando recebimento da base de dados por RecebimentoId={}", id);
         return recebimentoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Recebimento não encontrado"));
     }
 
     public RecebimentoResponseDTO buscarRecebimentoPorId(Long id) {
-        log.info("Buscando recebimento por Id={}", id);
+        log.info("Buscando recebimento por RecebimentoId={}", id);
         return toResponseDTO(buscarRecebimentoEntityPorId(id));
     }
 
     public List<RecebimentoResponseDTO> buscarTodosRecebimentos() {
-        log.info("Buscando todos os recebimentos.");
+        log.info("Buscando todos os recebimentos cadastrados.");
         return recebimentoRepository.findAll().stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
     public RecebimentoResponseDTO toResponseDTO(Recebimento recebimento) {
-        log.debug("Convertendo recebimento para DTO. Id={}", recebimento.getId());
+        log.debug("Convertendo recebimento para DTO. RecebimentoId={} | ContratoId={}", recebimento.getId(), recebimento.getContrato().getId());
         RecebimentoResponseDTO dto = new RecebimentoResponseDTO();
         dto.setId(recebimento.getId());
-        dto.setPessoaCuidadaId(recebimento.getPessoaCuidada().getId());
-        dto.setUsuarioId(recebimento.getUsuario().getId());
+        dto.setPessoaCuidadaId(recebimento.getContrato().getPessoaCuidada().getId());
+        dto.setUsuarioId(recebimento.getContrato().getUsuario().getId());
         dto.setContratoId(recebimento.getContrato().getId());
         dto.setDescricao(recebimento.getDescricao());
         dto.setValor(recebimento.getValor());

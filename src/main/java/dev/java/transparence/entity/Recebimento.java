@@ -17,10 +17,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "recebimento", indexes = {
-        @Index(name = "idx_recebimento_usuario", columnList = "usuario_id"),
-        @Index(name = "idx_recebimento_pessoa_cuidada", columnList = "pessoa_cuidada_id"),
         @Index(name = "idx_recebimento_contrato", columnList = "contrato_id"),
-        @Index(name = "idx_recebimento_validacao", columnList = "pessoa_cuidada_id, usuario_id, data_recebimento, valor_recebimento")
+        @Index(name = "idx_recebimento_validacao", columnList = "contrato_id, data_recebimento, valor_recebimento")
 })
 public class Recebimento {
     @Id
@@ -35,22 +33,14 @@ public class Recebimento {
     @Column(name = "comprovante_url")
     private String comprovanteUrl;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pessoa_cuidada_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_pessoa_cuidada"))
-    private PessoaCuidada pessoaCuidada;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_usuario"))
-    private Usuario usuario;
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contrato_id", nullable = false, foreignKey = @ForeignKey(name = "fk_recebimento_contrato"))
     private Contrato contrato;
 
     public Recebimento() {
     }
 
-    public Recebimento(PessoaCuidada pessoaCuidada, Usuario usuario, Contrato contrato,
+    public Recebimento(Contrato contrato,
             String descricao, BigDecimal valor, LocalDate dataRecebimento) {
-        this.pessoaCuidada = pessoaCuidada;
-        this.usuario = usuario;
         this.contrato = contrato;
         this.descricao = descricao;
         this.valor = valor;
@@ -92,23 +82,6 @@ public class Recebimento {
     public void setComprovanteUrl(String comprovanteUrl) {
         this.comprovanteUrl = comprovanteUrl;
     }
-
-    public PessoaCuidada getPessoaCuidada() {
-        return pessoaCuidada;
-    }
-
-    public void setPessoaCuidada(PessoaCuidada pessoaCuidada) {
-        this.pessoaCuidada = pessoaCuidada;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Contrato getContrato() {
         return contrato;
     }
