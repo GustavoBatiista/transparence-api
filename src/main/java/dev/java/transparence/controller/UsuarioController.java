@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.java.transparence.dto.UsuarioRequestDTO;
 import dev.java.transparence.dto.UsuarioResponseDTO;
 import dev.java.transparence.service.UsuarioService;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "1 - Usuário", description = "API para gerenciar usuários")
 @RestController
@@ -29,12 +29,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> incluirUsuario(@RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> incluirUsuario(@RequestBody @Valid UsuarioRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.incluirUsuario(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id,
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable @Valid Long id,
             @RequestBody UsuarioRequestDTO dto) {
         return ResponseEntity.ok(usuarioService.atualizarUsuario(id, dto));
     }

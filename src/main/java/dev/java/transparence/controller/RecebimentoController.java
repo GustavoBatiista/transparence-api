@@ -17,6 +17,7 @@ import dev.java.transparence.dto.RecebimentoRequestDTO;
 import dev.java.transparence.dto.RecebimentoResponseDTO;
 import dev.java.transparence.service.RecebimentoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "4 - Recebimento", description = "API para gerenciar recebimentos")
 @RestController
@@ -35,26 +36,26 @@ public class RecebimentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecebimentoResponseDTO> buscarRecebimentoPorId(@PathVariable Long id) {
+    public ResponseEntity<RecebimentoResponseDTO> buscarRecebimentoPorId(@PathVariable  Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(recebimentoService.buscarRecebimentoPorId(id));
     }
 
     @PostMapping
 
-    public ResponseEntity<RecebimentoResponseDTO> incluirRecebimento(@RequestBody RecebimentoRequestDTO dto) {
+    public ResponseEntity<RecebimentoResponseDTO> incluirRecebimento(@RequestBody @Valid RecebimentoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(recebimentoService.incluirRecebimento(dto));
     }
 
     @PutMapping("/{id}")
 
-    public ResponseEntity<RecebimentoResponseDTO> atualizarRecebimento(@PathVariable Long id,
-            @RequestBody RecebimentoRequestDTO dto) {
+    public ResponseEntity<RecebimentoResponseDTO> atualizarRecebimento(@PathVariable  Long id,
+            @RequestBody @Valid RecebimentoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(recebimentoService.atualizarRecebimento(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirRecebimento(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirRecebimento(@PathVariable  Long id) {
         recebimentoService.excluirRecebimento(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -2,9 +2,12 @@ package dev.java.transparence.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ContratoRequestDTO {
     private Long usuarioId;
     private Long pessoaCuidadaId;
+    @NotBlank(message = "Data de início é obrigatória")
     private LocalDate dataInicio;
     private LocalDate dataFim;
 

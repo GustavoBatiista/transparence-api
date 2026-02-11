@@ -1,23 +1,29 @@
 package dev.java.transparence.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class PessoaCuidadaRequestDTO {
 
-    private Long id;
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
+    @NotBlank(message = "CPF é obrigatório")
+    @Pattern(regexp = "\\d{11}", message = "CPF deve ter 11 dígitos")
     private String cpf;
+    @NotBlank(message = "Telefone é obrigatório")
+    @Pattern(regexp = "\\d{11}", message = "Telefone deve ter 11 dígitos")
     private String telefone;
+    @NotBlank(message = "Endereço é obrigatório")
     private String endereco;
+    @NotBlank(message = "Cidade é obrigatória")
     private String cidade;
+    @NotBlank(message = "Estado é obrigatório")
+    @Pattern(regexp = "(?i)[a-z]{2}", message = "Estado deve ter 2 letras")
     private String estado;
+    @NotBlank(message = "CEP é obrigatório")
+    @Pattern(regexp = "\\d{8}", message = "CEP deve ter 8 dígitos")
     private String cep;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

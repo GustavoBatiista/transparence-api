@@ -17,6 +17,7 @@ import dev.java.transparence.dto.GastoRequestDTO;
 import dev.java.transparence.dto.GastoResponseDTO;
 import dev.java.transparence.service.GastoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "5 - Gasto", description = "API para gerenciar gastos")
 @RestController
@@ -41,19 +42,19 @@ public class GastoController {
 
     @PostMapping
     public ResponseEntity<GastoResponseDTO> incluirGasto(
-            @RequestBody GastoRequestDTO dto) {
+            @RequestBody @Valid GastoRequestDTO dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(gastoService.incluirGasto(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GastoResponseDTO> atualizarGasto(@PathVariable Long id, @RequestBody GastoRequestDTO dto) {
+    public ResponseEntity<GastoResponseDTO> atualizarGasto(@PathVariable Long id, @RequestBody @Valid GastoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(gastoService.atualizarGasto(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirGasto(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirGasto(@PathVariable  Long id) {
         gastoService.excluirGasto(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

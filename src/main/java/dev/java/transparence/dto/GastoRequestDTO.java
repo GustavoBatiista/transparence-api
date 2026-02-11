@@ -3,39 +3,17 @@ package dev.java.transparence.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class GastoRequestDTO {
 
-    private Long id;
-    private Long pessoaCuidadaId;
-    private Long usuarioId;
     private Long contratoId;
+    @NotBlank(message = "Descrição é obrigatória")
     private String descricao;
+    @NotBlank(message = "Valor é obrigatório")
     private BigDecimal valor;
+    @NotBlank(message = "Data de gasto é obrigatória")
     private LocalDate dataGasto;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPessoaCuidadaId() {
-        return pessoaCuidadaId;
-    }
-
-    public void setPessoaCuidadaId(Long pessoaCuidadaId) {
-        this.pessoaCuidadaId = pessoaCuidadaId;
-    }
-
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
 
     public Long getContratoId() {
         return contratoId;

@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.transparence.dto.ContratoRequestDTO;
 import dev.java.transparence.dto.ContratoResponseDTO;
-
 import dev.java.transparence.service.ContratoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "3 - Contrato", description = "API para gerenciar contratos")
 @RestController
@@ -30,7 +29,7 @@ public class ContratoController {
     }
 
     @PostMapping
-    public ResponseEntity<ContratoResponseDTO> incluirContrato(@RequestBody ContratoRequestDTO dto) {
+    public ResponseEntity<ContratoResponseDTO> incluirContrato(@RequestBody @Valid ContratoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(contratoService.incluirContrato(dto));
     }
