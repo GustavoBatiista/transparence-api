@@ -18,9 +18,9 @@ public class GlobalExceptionHandler {
 
         private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        @ExceptionHandler(NotFoundException.class)
+        @ExceptionHandler(ResourceNotFoundException.class)
         public ResponseEntity<ApiErrorResponse> handleNotFound(
-                        NotFoundException ex,
+                        ResourceNotFoundException ex,
                         HttpServletRequest request) {
 
                 ApiErrorResponse error = new ApiErrorResponse(

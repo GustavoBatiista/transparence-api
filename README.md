@@ -1,6 +1,6 @@
 # Transparence API
 
-API REST desenvolvida em Java com Spring Boot para gerenciamento de usuários, pessoas cuidadas, contratos, gastos e recebimentos.
+API REST desenvolvida em Java com Spring Boot para gerenciamento de users, dependents, contracts, expenses e incomes.
 
 ![Status](https://img.shields.io/badge/status-online-success)
 ![Java](https://img.shields.io/badge/Java-17-blue)
@@ -11,10 +11,10 @@ API REST desenvolvida em Java com Spring Boot para gerenciamento de usuários, p
 
 A aplicação está disponível em ambiente cloud e pode ser testada em tempo real.
 
-🔗 [https://transparence-api-production.up.railway.app](https://transparence-api-production.up.railway.app)
+🔗 https://transparence-api-production.up.railway.app
 
-📄 Swagger:
-🔗 [https://transparence-api-production.up.railway.app/swagger-ui.html](https://transparence-api-production.up.railway.app/swagger-ui.html)
+📄 Swagger:  
+🔗 https://transparence-api-production.up.railway.app/swagger-ui.html
 
 A API está publicada em ambiente de produção utilizando Railway, com banco MySQL em cloud e configuração por variáveis de ambiente.
 
@@ -73,59 +73,59 @@ O projeto segue uma arquitetura em camadas, separando responsabilidades de forma
 
 ## 📌 Funcionalidades
 
-### 👤 Usuário
+### 👤 User
 
-* Criar usuário
-* Atualizar usuário
-* Buscar usuário por ID
-* Excluir usuário
+* Criar user
+* Atualizar user
+* Buscar user por ID
+* Excluir user
 
-### 👥 Pessoa Cuidada
+### 👥 Dependent
 
-* Criar pessoa cuidada
-* Atualizar pessoa cuidada
-* Buscar pessoa cuidada por ID
-* Excluir pessoa cuidada
+* Criar dependent
+* Atualizar dependent
+* Buscar dependent por ID
+* Excluir dependent
 
-### 📄 Contrato
+### 📄 Contract
 
-* Criar contrato
-* Buscar contrato por ID
-* Suspender contrato
-* Reativar contrato
-* Encerrar contrato
-* Excluir contrato
+* Criar contract
+* Buscar contract por ID
+* Suspender contract
+* Reativar contract
+* Encerrar contract
+* Excluir contract
 
-O contrato possui controle de status (ATIVO, SUSPENSO, ENCERRADO) e suas transições são controladas exclusivamente na camada de serviço.
+O contract possui controle de status (ACTIVE, SUSPENDED, CLOSED) e suas transições são controladas exclusivamente na camada de service.
 
-### 💰 Gasto
+### 💰 Expense
 
-* Criar gasto
-* Atualizar gasto
-* Buscar gasto por ID
-* Listar gastos
-* Excluir gasto
+* Criar expense
+* Atualizar expense
+* Buscar expense por ID
+* Listar expenses
+* Excluir expense
 
-Gastos só podem ser criados, atualizados ou excluídos se o contrato estiver ativo.
+Expenses só podem ser criados, atualizados ou excluídos se o contract estiver ativo.
 
-### 💵 Recebimento
+### 💵 Income
 
-* Criar recebimento
-* Atualizar recebimento
-* Buscar recebimento por ID
-* Listar recebimentos
-* Excluir recebimento
+* Criar income
+* Atualizar income
+* Buscar income por ID
+* Listar incomes
+* Excluir income
 
-Recebimentos também dependem do status do contrato.
+Incomes também dependem do status do contract.
 
 ---
 
 ## 🔐 Regras de Negócio
 
-* Não é permitido criar contratos ativos duplicados para o mesmo usuário e pessoa cuidada
-* Não é permitido criar gastos ou recebimentos para contratos inativos
-* Não é permitido cadastrar usuários com CPF ou e-mail duplicados
-* O status do contrato é controlado apenas pelo sistema
+* Não é permitido criar contracts ativos duplicados para o mesmo user e dependent
+* Não é permitido criar expenses ou incomes para contracts inativos
+* Não é permitido cadastrar users com CPF ou e-mail duplicados
+* O status do contract é controlado apenas pelo sistema
 * Datas de início, suspensão, reativação e encerramento são definidas automaticamente
 
 ---
