@@ -14,9 +14,9 @@ public class IncomeRequestDTO {
     @NotBlank(message = "value is required")
     private BigDecimal value;
     @NotBlank(message = "Income date is required")
-    private LocalDate dataincome;
+    private LocalDate dataIncome;
 
-    public Long getcontractId() {
+    public Long getContractId() {
         return contractId;
     }
 
@@ -32,20 +32,20 @@ public class IncomeRequestDTO {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public LocalDate getDataincome() {
-        return dataincome;
+    public LocalDate getDataIncome() {
+        return dataIncome;
     }
 
-    public void setDataincome(LocalDate dataincome) {
-        this.dataincome = dataincome;
+    public void setDataIncome(LocalDate dataIncome) {
+        this.dataIncome = dataIncome;
     }
 
 }

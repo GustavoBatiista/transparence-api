@@ -47,9 +47,9 @@ public class contractServiceImplTest {
 
     private ContractRequestDTO createContractRequestDTO() {
         ContractRequestDTO dto = new ContractRequestDTO();
-        dto.setuserId(1L);
-        dto.setdependentId(1L);
-        dto.setstartDate(LocalDate.now());
+        dto.setUserId(1L);
+        dto.setDependentId(1L);
+        dto.setStartDate(LocalDate.now());
         return dto;
     }
 
@@ -101,13 +101,13 @@ public class contractServiceImplTest {
         User user = createUser();
         Dependent dependent = createDependent();
 
-        when(userService.findUserByContract(dto.getuserId()))
+        when(userService.findUserByContract(dto.getUserId()))
                 .thenReturn(user);
 
-        when(dependentService.findDependentEntityById(dto.getdependentId()))
+        when(dependentService.findDependentEntityById(dto.getDependentId()))
                 .thenReturn(dependent);
 
-        when(contractRepository.existsByuser_IdAnddependent_IdAndStatus(user.getId(),
+        when(contractRepository.existsByUser_IdAndDependent_IdAndStatus(user.getId(),
                 dependent.getId(), ContractStatus.ACTIVE)).thenReturn(false);
 
         mockSaveComId();
@@ -115,15 +115,15 @@ public class contractServiceImplTest {
         ContractResponseDTO response = contractServiceImpl.createContract(dto);
 
         assertEquals(1L, response.getId());
-        assertEquals(dto.getuserId(), response.getuserId());
-        assertEquals(dto.getdependentId(), response.getdependentId());
-        assertEquals(dto.getstartDate(), response.getstartDate());
+        assertEquals(dto.getUserId(), response.getUserId());
+        assertEquals(dto.getDependentId(), response.getDependentId());
+        assertEquals(dto.getStartDate(), response.getStartDate());
         assertEquals(ContractStatus.ACTIVE, response.getStatus());
 
-        verify(userService).findUserByContract(dto.getuserId());
-        verify(dependentService).findDependentEntityById(dto.getdependentId());
-        verify(contractRepository).existsByuser_IdAnddependent_IdAndStatus(dto.getuserId(),
-                dto.getdependentId(), ContractStatus.ACTIVE);
+        verify(userService).findUserByContract(dto.getUserId());
+        verify(dependentService).findDependentEntityById(dto.getDependentId());
+        verify(contractRepository).existsByUser_IdAndDependent_IdAndStatus(dto.getUserId(),
+                dto.getDependentId(), ContractStatus.ACTIVE);
         verify(contractRepository).save(any(Contract.class));
     }
 
@@ -132,17 +132,17 @@ public class contractServiceImplTest {
         ContractRequestDTO dto = createContractRequestDTO();
         User user = createUser();
         Dependent dependent = createDependent();
-        when(userService.findUserByContract(dto.getuserId())).thenReturn(user);
-        when(dependentService.findDependentEntityById(dto.getdependentId())).thenReturn(dependent);
+        when(userService.findUserByContract(dto.getUserId())).thenReturn(user);
+        when(dependentService.findDependentEntityById(dto.getDependentId())).thenReturn(dependent);
 
-        when(contractRepository.existsByuser_IdAnddependent_IdAndStatus(user.getId(),
+        when(contractRepository.existsByUser_IdAndDependent_IdAndStatus(user.getId(),
                 dependent.getId(), ContractStatus.ACTIVE)).thenReturn(true);
 
         assertThrows(BusinessException.class, () -> contractServiceImpl.createContract(dto));
 
-        verify(userService).findUserByContract(dto.getuserId());
-        verify(dependentService).findDependentEntityById(dto.getdependentId());
-        verify(contractRepository).existsByuser_IdAnddependent_IdAndStatus(user.getId(),
+        verify(userService).findUserByContract(dto.getUserId());
+        verify(dependentService).findDependentEntityById(dto.getDependentId());
+        verify(contractRepository).existsByUser_IdAndDependent_IdAndStatus(user.getId(),
                 dependent.getId(), ContractStatus.ACTIVE);
         verify(contractRepository, never()).save(any(Contract.class));
     }
@@ -160,7 +160,7 @@ public class contractServiceImplTest {
 
         assertEquals(contract.getId(), response.getId());
         assertEquals(ContractStatus.CLOSED, response.getStatus());
-        assertEquals(LocalDate.now(), response.getendDate());
+        assertEquals(LocalDate.now(), response.getEndDate());
 
         verify(contractRepository).findById(contract.getId());
         verify(contractRepository).save(any(Contract.class));
@@ -273,9 +273,9 @@ public class contractServiceImplTest {
         when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
         ContractResponseDTO response = contractServiceImpl.findContractById(contract.getId());
         assertEquals(contract.getId(), response.getId());
-        assertEquals(contract.getuser().getId(), response.getuserId());
-        assertEquals(contract.getdependent().getId(), response.getdependentId());
-        assertEquals(contract.getstartDate(), response.getstartDate());
+        assertEquals(contract.getUser().getId(), response.getUserId());
+        assertEquals(contract.getDependent().getId(), response.getDependentId());
+        assertEquals(contract.getStartDate(), response.getStartDate());
         assertEquals(contract.getStatus(), response.getStatus());
 
         verify(contractRepository).findById(contract.getId());

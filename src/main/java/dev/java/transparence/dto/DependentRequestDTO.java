@@ -25,7 +25,7 @@ public class DependentRequestDTO {
     private String zipCode;
 
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 

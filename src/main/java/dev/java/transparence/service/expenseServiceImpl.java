@@ -32,9 +32,9 @@ public class expenseServiceImpl implements expenseService {
     @Override
     public ExpenseResponseDTO createExpense(ExpenseRequestDTO dto) {
 
-        log.info("Starting expense creation. contractId={}", dto.getcontractId());
+        log.info("Starting expense creation. contractId={}", dto.getContractId());
 
-        Contract contract = contractService.findContractForOperation(dto.getcontractId());
+        Contract contract = contractService.findContractForOperation(dto.getContractId());
 
         if (contract.getStatus() != ContractStatus.ACTIVE) {
             log.warn("Attempt to create an expense for a non-active contract. contractId={} | status={}",
@@ -42,16 +42,16 @@ public class expenseServiceImpl implements expenseService {
             throw new BusinessException("Only expenses from active contracts are allowed");
         }
 
-        boolean existeexpense = expenseRepository.existsBycontract_IdAndDataexpenseAndvalue(
-                dto.getcontractId(), dto.getDataexpense(), dto.getvalue());
+        boolean existeExpense = expenseRepository.existsByContract_IdAndDataExpenseAndValue(
+                dto.getContractId(), dto.getDataExpense(), dto.getValue());
 
-        if (existeexpense) {
-            log.warn("Attempt to create an already existing expense. contractId={}", dto.getcontractId());
+        if (existeExpense) {
+            log.warn("Attempt to create an already existing expense. contractId={}", dto.getContractId());
             throw new BusinessException("Expense already exists");
         }
 
         Expense expense = new Expense(contract,
-                dto.getDescription(), dto.getvalue(), dto.getDataexpense());
+                dto.getDescription(), dto.getValue(), dto.getDataExpense());
 
         Expense save = expenseRepository.save(expense);
 
@@ -64,7 +64,7 @@ public class expenseServiceImpl implements expenseService {
     public ExpenseResponseDTO updateExpense(Long id, ExpenseRequestDTO dto) {
 
         Expense expenseExistente = findExpenseEntityById(id);
-        Contract contract = expenseExistente.getcontract();
+        Contract contract = expenseExistente.getContract();
 
         log.info("Starting expense update. expenseId={} | contractId={}", id, contract.getId());
 
@@ -75,13 +75,13 @@ public class expenseServiceImpl implements expenseService {
         }
 
         expenseExistente.setDescription(dto.getDescription());
-        expenseExistente.setvalue(dto.getvalue());
-        expenseExistente.setDataexpense(dto.getDataexpense());
+        expenseExistente.setValue(dto.getValue());
+        expenseExistente.setDataExpense(dto.getDataExpense());
 
         Expense atualizado = expenseRepository.save(expenseExistente);
 
         log.info("Expense updated successfully. expenseId={} | contractId={}",
-                atualizado.getId(), atualizado.getcontract().getId());
+                atualizado.getId(), atualizado.getContract().getId());
 
         return toResponseDTO(atualizado);
     }
@@ -92,7 +92,7 @@ public class expenseServiceImpl implements expenseService {
         log.info("Starting expense deletion. expenseId={}", id);
 
         Expense expenseExistente = findExpenseEntityById(id);
-        Contract contract = expenseExistente.getcontract();
+        Contract contract = expenseExistente.getContract();
 
         if (contract.getStatus() != ContractStatus.ACTIVE) {
             log.warn("Attempt to delete an expense for a non-active contract. expenseId={} | contractId={}",
@@ -114,7 +114,7 @@ public class expenseServiceImpl implements expenseService {
     }
 
     @Override
-    public ExpenseResponseDTO findExpensById(Long id) {
+    public ExpenseResponseDTO findExpenseById(Long id) {
 
         log.info("Finding expense by id. expenseId={}", id);
 
@@ -135,17 +135,17 @@ public class expenseServiceImpl implements expenseService {
     private ExpenseResponseDTO toResponseDTO(Expense expense) {
 
         log.debug("Converting expense to DTO. expenseId={} | contractId={}",
-                expense.getId(), expense.getcontract().getId());
+                expense.getId(), expense.getContract().getId());
 
         ExpenseResponseDTO dto = new ExpenseResponseDTO();
 
         dto.setId(expense.getId());
-        dto.setdependentId(expense.getcontract().getdependent().getId());
-        dto.setuserId(expense.getcontract().getuser().getId());
-        dto.setcontractId(expense.getcontract().getId());
+        dto.setdependentId(expense.getContract().getDependent().getId());
+        dto.setuserId(expense.getContract().getUser().getId());
+        dto.setcontractId(expense.getContract().getId());
         dto.setDescription(expense.getDescription());
-        dto.setvalue(expense.getvalue());
-        dto.setData(expense.getDataexpense());
+        dto.setValue(expense.getValue());
+        dto.setData(expense.getDataExpense());
         dto.setReceiptUrl(expense.getReceiptUrl());
 
         return dto;

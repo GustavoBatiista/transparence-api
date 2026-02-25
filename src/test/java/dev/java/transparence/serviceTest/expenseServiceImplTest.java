@@ -43,12 +43,12 @@ public class expenseServiceImplTest {
     @InjectMocks
     private expenseServiceImpl expenseServiceImpl;
 
-    private ExpenseRequestDTO createexpenseRequestDTO() {
+    private ExpenseRequestDTO createExpenseRequestDTO() {
         ExpenseRequestDTO dto = new ExpenseRequestDTO();
         dto.setcontractId(1L);
         dto.setDescription("Teste");
-        dto.setvalue(BigDecimal.valueOf(100));
-        dto.setDataexpense(LocalDate.now());
+        dto.setValue(BigDecimal.valueOf(100));
+        dto.setDataExpense(LocalDate.now());
         return dto;
     }
 
@@ -100,57 +100,57 @@ public class expenseServiceImplTest {
     @Test
     void shouldCreateExpenseSuccessfully() {
 
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
         Contract contract = createActiveContract();
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
 
-        when(expenseRepository.existsBycontract_IdAndDataexpenseAndvalue(
-                dto.getcontractId(), dto.getDataexpense(), dto.getvalue())).thenReturn(false);
+        when(expenseRepository.existsByContract_IdAndDataExpenseAndValue(
+                dto.getContractId(), dto.getDataExpense(), dto.getValue())).thenReturn(false);
 
         when(expenseRepository.save(any())).thenReturn(createExpenseEntity());
 
         ExpenseResponseDTO response = expenseServiceImpl.createExpense(dto);
 
-        assertEquals(dto.getcontractId(), response.getcontractId());
+        assertEquals(dto.getContractId(), response.getContractId());
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(expenseRepository).save(any());
     }
 
     @Test
     void shouldThrowExceptionWhenContractIsNotActive() {
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
         Contract contract = createActiveContract();
         contract.setStatus(ContractStatus.CLOSED);
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
         assertThrows(BusinessException.class, () -> expenseServiceImpl.createExpense(dto));
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(expenseRepository, never()).save(any());
     }
 
     @Test
     void shouldThrowExceptionWhenExpenseAlreadyExists() {
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
         Contract contract = createActiveContract();
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
-        when(expenseRepository.existsBycontract_IdAndDataexpenseAndvalue(
-                dto.getcontractId(), dto.getDataexpense(), dto.getvalue())).thenReturn(true);
+        when(expenseRepository.existsByContract_IdAndDataExpenseAndValue(
+                dto.getContractId(), dto.getDataExpense(), dto.getValue())).thenReturn(true);
         assertThrows(BusinessException.class, () -> expenseServiceImpl.createExpense(dto));
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(expenseRepository, never()).save(any());
     }
 
     @Test
     void shouldUpdateExpenseSuccessfully() {
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
         Expense expense = createExpenseEntity();
 
         when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
@@ -158,10 +158,10 @@ public class expenseServiceImplTest {
 
         ExpenseResponseDTO response = expenseServiceImpl.updateExpense(expense.getId(), dto);
 
-        assertEquals(expense.getcontract().getId(), response.getcontractId());
+        assertEquals(expense.getContract().getId(), response.getContractId());
         assertEquals(dto.getDescription(), response.getDescription());
-        assertEquals(dto.getvalue(), response.getvalue());
-        assertEquals(dto.getDataexpense(), response.getData());
+        assertEquals(dto.getValue(), response.getValue());
+        assertEquals(dto.getDataExpense(), response.getData());
 
         verify(expenseRepository).findById(expense.getId());
         verify(expenseRepository).save(any());
@@ -169,9 +169,9 @@ public class expenseServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenUpdatingExpenseAndContractIsNotActive() {
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
         Expense expense = createExpenseEntity();
-        expense.getcontract().setStatus(ContractStatus.CLOSED);
+        expense.getContract().setStatus(ContractStatus.CLOSED);
 
         when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
 
@@ -183,13 +183,13 @@ public class expenseServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenUpdatingNonExistingExpense() {
-        ExpenseRequestDTO dto = createexpenseRequestDTO();
+        ExpenseRequestDTO dto = createExpenseRequestDTO();
 
         when(expenseRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> expenseServiceImpl.updateExpense(dto.getcontractId(), dto));
+        assertThrows(ResourceNotFoundException.class, () -> expenseServiceImpl.updateExpense(dto.getContractId(), dto));
 
-        verify(expenseRepository).findById(dto.getcontractId());
+        verify(expenseRepository).findById(dto.getContractId());
         verify(expenseRepository, never()).save(any());
     }
 
@@ -205,7 +205,7 @@ public class expenseServiceImplTest {
     @Test
     void shouldThrowExceptionWhenDeletingExpenseAndContractIsNotActive() {
         Expense expense = createExpenseEntity();
-        expense.getcontract().setStatus(ContractStatus.CLOSED);
+        expense.getContract().setStatus(ContractStatus.CLOSED);
         when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
         assertThrows(BusinessException.class, () -> expenseServiceImpl.deleteExpense(expense.getId()));
         verify(expenseRepository).findById(expense.getId());
@@ -233,7 +233,7 @@ public class expenseServiceImplTest {
     void shouldReturnExpenseWhenFindingById() {
         Expense expense = createExpenseEntity();
         when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
-        ExpenseResponseDTO response = expenseServiceImpl.findExpensById(expense.getId());
+        ExpenseResponseDTO response = expenseServiceImpl.findExpenseById(expense.getId());
         assertEquals(expense.getId(), response.getId());
         verify(expenseRepository).findById(expense.getId());
     }
@@ -241,7 +241,7 @@ public class expenseServiceImplTest {
     @Test
     void shouldThrowExceptionWhenFindingNonExistingExpenseById() {
         when(expenseRepository.findById(any())).thenReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> expenseServiceImpl.findExpensById(1L));
+        assertThrows(ResourceNotFoundException.class, () -> expenseServiceImpl.findExpenseById(1L));
         verify(expenseRepository).findById(any());
     }
 }

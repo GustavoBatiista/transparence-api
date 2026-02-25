@@ -13,9 +13,9 @@ public class ExpenseRequestDTO {
     @NotBlank(message = "value is required")
     private BigDecimal value;
     @NotBlank(message = "Expense date is required")
-    private LocalDate dataexpense;
+    private LocalDate dataExpense;
 
-    public Long getcontractId() {
+    public Long getContractId() {
         return contractId;
     }
 
@@ -31,20 +31,20 @@ public class ExpenseRequestDTO {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public LocalDate getDataexpense() {
-        return dataexpense;
+    public LocalDate getDataExpense() {
+        return dataExpense;
     }
 
-    public void setDataexpense(LocalDate dataexpense) {
-        this.dataexpense = dataexpense;
+    public void setDataExpense(LocalDate dataExpense) {
+        this.dataExpense = dataExpense;
     }
 
 }

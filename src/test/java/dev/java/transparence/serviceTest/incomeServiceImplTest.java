@@ -47,8 +47,8 @@ public class incomeServiceImplTest {
         IncomeRequestDTO dto = new IncomeRequestDTO();
         dto.setcontractId(1L);
         dto.setDescription("Teste");
-        dto.setvalue(BigDecimal.valueOf(100));
-        dto.setDataincome(LocalDate.now());
+        dto.setValue(BigDecimal.valueOf(100));
+        dto.setDataIncome(LocalDate.now());
         return dto;
     }
 
@@ -103,22 +103,22 @@ public class incomeServiceImplTest {
         IncomeRequestDTO dto = createincomeRequestDTO();
         Contract contract = createActiveContract();
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
 
-        when(incomeRepository.existsBycontract_IdAndDataincomeAndvalue(
-                dto.getcontractId(), dto.getDataincome(), dto.getvalue())).thenReturn(false);
+        when(incomeRepository.existsByContract_IdAndDataIncomeAndValue(
+                dto.getContractId(), dto.getDataIncome(), dto.getValue())).thenReturn(false);
 
         when(incomeRepository.save(any())).thenReturn(createIncomeEntity());
 
         IncomeResponseDTO response = incomeServiceImpl.createIncome(dto);
 
-        assertEquals(dto.getcontractId(), response.getcontractId());
+        assertEquals(dto.getContractId(), response.getContractId());
         assertEquals(dto.getDescription(), response.getDescription());
-        assertEquals(dto.getvalue(), response.getvalue());
-        assertEquals(dto.getDataincome(), response.getData());
+        assertEquals(dto.getValue(), response.getValue());
+        assertEquals(dto.getDataIncome(), response.getData());
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(incomeRepository).save(any());
     }
 
@@ -128,11 +128,11 @@ public class incomeServiceImplTest {
         Contract contract = createActiveContract();
         contract.setStatus(ContractStatus.CLOSED);
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
         assertThrows(BusinessException.class, () -> incomeServiceImpl.createIncome(dto));
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(incomeRepository, never()).save(any());
     }
 
@@ -141,13 +141,13 @@ public class incomeServiceImplTest {
         IncomeRequestDTO dto = createincomeRequestDTO();
         Contract contract = createActiveContract();
 
-        when(contractService.findContractForOperation(dto.getcontractId()))
+        when(contractService.findContractForOperation(dto.getContractId()))
                 .thenReturn(contract);
-        when(incomeRepository.existsBycontract_IdAndDataincomeAndvalue(
-                dto.getcontractId(), dto.getDataincome(), dto.getvalue())).thenReturn(true);
+        when(incomeRepository.existsByContract_IdAndDataIncomeAndValue(
+                dto.getContractId(), dto.getDataIncome(), dto.getValue())).thenReturn(true);
         assertThrows(BusinessException.class, () -> incomeServiceImpl.createIncome(dto));
 
-        verify(contractService).findContractForOperation(dto.getcontractId());
+        verify(contractService).findContractForOperation(dto.getContractId());
         verify(incomeRepository, never()).save(any());
     }
 
@@ -161,10 +161,10 @@ public class incomeServiceImplTest {
 
         IncomeResponseDTO response = incomeServiceImpl.updateIncome(income.getId(), dto);
 
-        assertEquals(income.getcontract().getId(), response.getcontractId());
+        assertEquals(income.getContract().getId(), response.getContractId());
         assertEquals(dto.getDescription(), response.getDescription());
-        assertEquals(dto.getvalue(), response.getvalue());
-        assertEquals(dto.getDataincome(), response.getData());
+        assertEquals(dto.getValue(), response.getValue());
+        assertEquals(dto.getDataIncome(), response.getData());
 
         verify(incomeRepository).findById(income.getId());
         verify(incomeRepository).save(any());
@@ -174,7 +174,7 @@ public class incomeServiceImplTest {
     void shouldThrowExceptionWhenUpdatingIncomeAndContractIsNotActive() {
         IncomeRequestDTO dto = createincomeRequestDTO();
         Income income = createIncomeEntity();
-        income.getcontract().setStatus(ContractStatus.CLOSED);
+        income.getContract().setStatus(ContractStatus.CLOSED);
 
         when(incomeRepository.findById(income.getId())).thenReturn(Optional.of(income));
 
@@ -209,7 +209,7 @@ public class incomeServiceImplTest {
     @Test
     void shouldThrowExceptionWhenDeletingIncomeAndContractIsNotActive() {
         Income income = createIncomeEntity();
-        income.getcontract().setStatus(ContractStatus.CLOSED);
+        income.getContract().setStatus(ContractStatus.CLOSED);
         when(incomeRepository.findById(income.getId())).thenReturn(Optional.of(income));
         assertThrows(BusinessException.class, () -> incomeServiceImpl.deleteIncome(income.getId()));
         verify(incomeRepository).findById(income.getId());

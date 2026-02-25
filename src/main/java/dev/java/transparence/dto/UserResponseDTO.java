@@ -20,7 +20,7 @@ public class UserResponseDTO {
         this.id = id;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 

@@ -30,11 +30,11 @@ public class ExpenseResponseDTO {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -54,7 +54,7 @@ public class ExpenseResponseDTO {
         this.receiptUrl = receiptUrl;
     }
 
-    public Long getdependentId() {
+    public Long getDependentId() {
         return dependentId;
     }
 
@@ -62,7 +62,7 @@ public class ExpenseResponseDTO {
         this.dependentId = dependentId;
     }
 
-    public Long getuserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -70,7 +70,7 @@ public class ExpenseResponseDTO {
         this.userId = userId;
     }
 
-    public Long getcontractId() {
+    public Long getContractId() {
         return contractId;
     }
 

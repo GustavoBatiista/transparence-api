@@ -29,11 +29,11 @@ public class IncomeResponseDTO {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -53,7 +53,7 @@ public class IncomeResponseDTO {
         this.receiptUrl = receiptUrl;
     }
 
-    public Long getdependentId() {
+    public Long getDependentId() {
         return dependentId;
     }
 
@@ -61,7 +61,7 @@ public class IncomeResponseDTO {
         this.dependentId = dependentId;
     }
 
-    public Long getuserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -69,7 +69,7 @@ public class IncomeResponseDTO {
         this.userId = userId;
     }
 
-    public Long getcontractId() {
+    public Long getContractId() {
         return contractId;
     }
 

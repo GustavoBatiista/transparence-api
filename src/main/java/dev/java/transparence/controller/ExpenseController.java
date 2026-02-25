@@ -36,8 +36,8 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseResponseDTO> findExpensById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(expenseService.findExpensById(id));
+    public ResponseEntity<ExpenseResponseDTO> findExpenseById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(expenseService.findExpenseById(id));
     }
 
     @PostMapping

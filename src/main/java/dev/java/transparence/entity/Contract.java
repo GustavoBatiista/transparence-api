@@ -56,39 +56,39 @@ public class Contract {
         return id;
     }
 
-    public User getuser() {
+    public User getUser() {
         return user;
     }
 
-    public void setuser(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Dependent getdependent() {
+    public Dependent getDependent() {
         return dependent;
     }
 
-    public void setdependent(Dependent dependent) {
+    public void setDependent(Dependent dependent) {
         this.dependent = dependent;
     }
 
-    public Long getdependentId() {
+    public Long getDependentId() {
         return dependent.getId();
     }
 
-    public LocalDate getstartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setstartDate(LocalDate startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getendDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setendDate(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

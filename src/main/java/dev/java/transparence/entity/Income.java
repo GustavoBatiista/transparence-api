@@ -29,7 +29,7 @@ public class Income {
     @Column(name = "value_income", nullable = false, precision = 10, scale = 2)
     private BigDecimal value;
     @Column(name = "data_income", nullable = false)
-    private LocalDate dataincome;
+    private LocalDate dataIncome;
     @Column(name = "receipt_url")
     private String receiptUrl;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,11 +40,11 @@ public class Income {
     }
 
     public Income(Contract contract,
-            String description, BigDecimal value, LocalDate dataincome) {
+            String description, BigDecimal value, LocalDate dataIncome) {
         this.contract = contract;
         this.description = description;
         this.value = value;
-        this.dataincome = dataincome;
+        this.dataIncome = dataIncome;
     }
 
     public Long getId() {
@@ -59,20 +59,20 @@ public class Income {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public LocalDate getDataincome() {
-        return dataincome;
+    public LocalDate getDataIncome() {
+        return dataIncome;
     }
 
-    public void setDataincome(LocalDate dataincome) {
-        this.dataincome = dataincome;
+    public void setDataIncome(LocalDate dataIncome) {
+        this.dataIncome = dataIncome;
     }
 
     public String getReceiptUrl() {
@@ -82,7 +82,7 @@ public class Income {
     public void setReceiptUrl(String receiptUrl) {
         this.receiptUrl = receiptUrl;
     }
-    public Contract getcontract() {
+    public Contract getContract() {
         return contract;
     }
 
@@ -116,7 +116,7 @@ public class Income {
         return "income [id=" + id +
                 ", description=" + description +
                 ", value=" + value +
-                ", dataincome=" + dataincome +
+                ", dataIncome=" + dataIncome +
                 ", receiptUrl=" + receiptUrl + "]";
     }
 }

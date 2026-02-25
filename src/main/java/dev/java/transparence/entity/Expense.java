@@ -30,7 +30,7 @@ public class Expense {
     @Column(name = "value_expense", nullable = false, precision = 10, scale = 2)
     private BigDecimal value;
     @Column(name = "data_expense", nullable = false)
-    private LocalDate dataexpense;
+    private LocalDate dataExpense;
     @Column(name = "receipt_url")
     private String receiptUrl;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,11 +41,11 @@ public class Expense {
     }
 
     public Expense(Contract contract,
-            String description, BigDecimal value, LocalDate dataexpense) {
+            String description, BigDecimal value, LocalDate dataExpense) {
         this.contract = contract;
         this.description = description;
         this.value = value;
-        this.dataexpense = dataexpense;
+        this.dataExpense = dataExpense;
     }
 
     public Long getId() {
@@ -60,20 +60,20 @@ public class Expense {
         this.description = description;
     }
 
-    public BigDecimal getvalue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setvalue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public LocalDate getDataexpense() {
-        return dataexpense;
+    public LocalDate getDataExpense() {
+        return dataExpense;
     }
 
-    public void setDataexpense(LocalDate dataexpense) {
-        this.dataexpense = dataexpense;
+    public void setDataExpense(LocalDate dataExpense) {
+        this.dataExpense = dataExpense;
     }
 
     public String getReceiptUrl() {
@@ -84,11 +84,11 @@ public class Expense {
         this.receiptUrl = receiptUrl;
     }
 
-    public Contract getcontract() {
+    public Contract getContract() {
         return contract;
     }
 
-    public void setcontract(Contract contract) {
+    public void setContract(Contract contract) {
         this.contract = contract;
     }
 
@@ -119,7 +119,7 @@ public class Expense {
 
     @Override
     public String toString() {
-        return "expense [id=" + id + ", description=" + description + ", value=" + value + ", dataexpense=" + dataexpense
+        return "expense [id=" + id + ", description=" + description + ", value=" + value + ", dataExpense=" + dataExpense
                 + ", receiptUrl=" + receiptUrl + "]";
     }
 

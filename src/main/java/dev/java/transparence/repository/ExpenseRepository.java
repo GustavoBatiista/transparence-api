@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-    public boolean existsBycontract_IdAndDataexpenseAndvalue(
+    public boolean existsByContract_IdAndDataExpenseAndValue(
             Long contractId,
-            LocalDate dataexpense,
+            LocalDate dataExpense,
             BigDecimal value);
 }

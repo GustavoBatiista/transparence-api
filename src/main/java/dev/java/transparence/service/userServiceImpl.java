@@ -37,7 +37,7 @@ public class userServiceImpl implements userService {
             throw new BusinessException("Email already registered");
         }
 
-        User user = new User(dto.getCpf(), dto.getname(), dto.getEmail(), dto.getpassword(),
+        User user = new User(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getpassword(),
                 dto.getphone(), dto.getadress(), dto.getcity(), dto.getstate(),
                 dto.getzipCode());
 
@@ -61,13 +61,13 @@ public class userServiceImpl implements userService {
             throw new BusinessException("Email already registered");
         }
 
-        existente.setname(dto.getname());
+        existente.setName(dto.getName());
         existente.setEmail(dto.getEmail());
-        existente.setphone(dto.getphone());
-        existente.setadress(dto.getadress());
-        existente.setcity(dto.getcity());
-        existente.setstate(dto.getstate());
-        existente.setzipCode(dto.getzipCode());
+        existente.setPhone(dto.getphone());
+        existente.setAdress(dto.getadress());
+        existente.setCity(dto.getcity());
+        existente.setState(dto.getstate());
+        existente.setZipCode(dto.getzipCode());
 
         log.info("User updated successfully. userId={}", id);
 
@@ -114,13 +114,13 @@ public class userServiceImpl implements userService {
 
         dto.setId(user.getId());
         dto.setCpf(user.getCpf());
-        dto.setname(user.getname());
+        dto.setname(user.getName());
         dto.setEmail(user.getEmail());
-        dto.setphone(user.getphone());
-        dto.setadress(user.getadress());
-        dto.setcity(user.getcity());
-        dto.setstate(user.getstate());
-        dto.setzipCode(user.getzipCode());
+        dto.setphone(user.getPhone());
+        dto.setadress(user.getAdress());
+        dto.setcity(user.getCity());
+        dto.setstate(user.getState());
+        dto.setzipCode(user.getZipCode());
 
         return dto;
     }

@@ -37,16 +37,16 @@ public class ContractServiceImpl implements ContractService {
     public ContractResponseDTO createContract(ContractRequestDTO dto) {
 
         log.info("Starting contract creation. userId={}, dependentId={}",
-                dto.getuserId(), dto.getdependentId());
+                dto.getUserId(), dto.getDependentId());
 
-        User user = userService.findUserByContract(dto.getuserId());
-        Dependent dependent = dependentService.findDependentEntityById(dto.getdependentId());
+        User user = userService.findUserByContract(dto.getUserId());
+        Dependent dependent = dependentService.findDependentEntityById(dto.getDependentId());
 
-        if (contractRepository.existsByuser_IdAnddependent_IdAndStatus(
+        if (contractRepository.existsByUser_IdAndDependent_IdAndStatus(
                 user.getId(), dependent.getId(), ContractStatus.ACTIVE)) {
 
             log.warn("Attempt to create a contract that already exists. userId={}, dependentId={}",
-                    dto.getuserId(), dto.getdependentId());
+                    dto.getUserId(), dto.getDependentId());
 
             throw new BusinessException("Contract already exists");
         }
@@ -73,7 +73,7 @@ public class ContractServiceImpl implements ContractService {
         }
 
         contractExistente.setStatus(ContractStatus.CLOSED);
-        contractExistente.setendDate(LocalDate.now());
+        contractExistente.setEndDate(LocalDate.now());
 
         log.info("Contract closed successfully. contractId={}", id);
 
@@ -157,10 +157,10 @@ public class ContractServiceImpl implements ContractService {
         ContractResponseDTO dto = new ContractResponseDTO();
 
         dto.setId(contract.getId());
-        dto.setuserId(contract.getuser().getId());
-        dto.setdependentId(contract.getdependent().getId());
-        dto.setstartDate(contract.getstartDate());
-        dto.setendDate(contract.getendDate());
+        dto.setUserId(contract.getUser().getId());
+        dto.setDependentId(contract.getDependent().getId());
+        dto.setStartDate(contract.getStartDate());
+        dto.setEndDate(contract.getEndDate());
         dto.setStatus(contract.getStatus());
 
         return dto;

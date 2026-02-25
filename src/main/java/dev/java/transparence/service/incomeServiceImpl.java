@@ -32,35 +32,35 @@ public class incomeServiceImpl implements incomeService {
     @Override
     public IncomeResponseDTO createIncome(IncomeRequestDTO dto) {
 
-        log.info("Starting income creation. contractId={}", dto.getcontractId());
+        log.info("Starting income creation. contractId={}", dto.getContractId());
 
-        Contract contract = contractService.findContractForOperation(dto.getcontractId());
+        Contract contract = contractService.findContractForOperation(dto.getContractId());
 
         if (contract.getStatus() != ContractStatus.ACTIVE) {
-            log.warn("Attempt to create an income for a non-active contract. contractId={}", dto.getcontractId());
+            log.warn("Attempt to create an income for a non-active contract. contractId={}", dto.getContractId());
             throw new BusinessException("Only active contracts can receive incomes");
         }
 
         boolean existeincome = incomeRepository
-                .existsBycontract_IdAndDataincomeAndvalue(
-                        dto.getcontractId(),
-                        dto.getDataincome(),
-                        dto.getvalue());
+                .existsByContract_IdAndDataIncomeAndValue(
+                        dto.getContractId(),
+                        dto.getDataIncome(),
+                        dto.getValue());
 
         if (existeincome) {
-            log.warn("Attempt to create an already existing income. contractId={}", dto.getcontractId());
+            log.warn("Attempt to create an already existing income. contractId={}", dto.getContractId());
             throw new BusinessException("Income already exists");
         }
 
         Income income = new Income(contract,
                 dto.getDescription(),
-                dto.getvalue(),
-                dto.getDataincome());
+                dto.getValue(),
+                dto.getDataIncome());
 
         Income save = incomeRepository.save(income);
 
         log.info("Income created successfully. incomeId={} | contractId={}",
-                save.getId(), dto.getcontractId());
+                save.getId(), dto.getContractId());
 
         return toResponseDTO(save);
     }
@@ -69,7 +69,7 @@ public class incomeServiceImpl implements incomeService {
     public IncomeResponseDTO updateIncome(Long id, IncomeRequestDTO dto) {
 
         Income incomeExistente = findIncomeEntityById(id);
-        Contract contract = incomeExistente.getcontract();
+        Contract contract = incomeExistente.getContract();
 
         log.info("Starting income update. incomeId={} | contractId={}", id, contract.getId());
 
@@ -80,13 +80,13 @@ public class incomeServiceImpl implements incomeService {
         }
 
         incomeExistente.setDescription(dto.getDescription());
-        incomeExistente.setvalue(dto.getvalue());
-        incomeExistente.setDataincome(dto.getDataincome());
+        incomeExistente.setValue(dto.getValue());
+        incomeExistente.setDataIncome(dto.getDataIncome());
 
         Income atualizado = incomeRepository.save(incomeExistente);
 
         log.info("Income updated successfully. incomeId={} | contractId={}",
-                atualizado.getId(), atualizado.getcontract().getId());
+                atualizado.getId(), atualizado.getContract().getId());
 
         return toResponseDTO(atualizado);
     }
@@ -97,7 +97,7 @@ public class incomeServiceImpl implements incomeService {
         log.info("Starting income deletion. incomeId={}", id);
 
         Income incomeExistente = findIncomeEntityById(id);
-        Contract contract = incomeExistente.getcontract();
+        Contract contract = incomeExistente.getContract();
 
         if (contract.getStatus() != ContractStatus.ACTIVE) {
             log.warn("Attempt to delete an income for a non-active contract. contractId={} | status={}",
@@ -140,17 +140,17 @@ public class incomeServiceImpl implements incomeService {
     private IncomeResponseDTO toResponseDTO(Income income) {
 
         log.debug("Converting income to DTO. incomeId={} | contractId={}",
-                income.getId(), income.getcontract().getId());
+                income.getId(), income.getContract().getId());
 
         IncomeResponseDTO dto = new IncomeResponseDTO();
 
         dto.setId(income.getId());
-        dto.setdependentId(income.getcontract().getdependent().getId());
-        dto.setuserId(income.getcontract().getuser().getId());
-        dto.setcontractId(income.getcontract().getId());
+        dto.setdependentId(income.getContract().getDependent().getId());
+        dto.setuserId(income.getContract().getUser().getId());
+        dto.setcontractId(income.getContract().getId());
         dto.setDescription(income.getDescription());
-        dto.setvalue(income.getvalue());
-        dto.setData(income.getDataincome());
+        dto.setValue(income.getValue());
+        dto.setData(income.getDataIncome());
         dto.setReceiptUrl(income.getReceiptUrl());
 
         return dto;

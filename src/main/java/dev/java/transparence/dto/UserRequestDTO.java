@@ -33,7 +33,7 @@ public class UserRequestDTO {
     @Pattern(regexp = "\\d{11}", message = "CPF must have at least 11 digits")
     private String cpf;
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 

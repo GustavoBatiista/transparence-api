@@ -11,35 +11,35 @@ public class ContractRequestDTO {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Long getuserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setuserId(Long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Long getdependentId() {
+    public Long getDependentId() {
         return dependentId;
     }
 
-    public void setdependentId(Long dependentId) {
+    public void setDependentId(Long dependentId) {
         this.dependentId = dependentId;
     }
 
-    public LocalDate getstartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setstartDate(LocalDate startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getendDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setendDate(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

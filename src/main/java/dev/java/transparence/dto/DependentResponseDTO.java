@@ -27,7 +27,7 @@ public class DependentResponseDTO {
         this.cpf = cpf;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 

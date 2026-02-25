@@ -11,8 +11,8 @@ import java.time.LocalDate;
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, Long> {
 
-    public boolean existsBycontract_IdAndDataincomeAndvalue(
+    public boolean existsByContract_IdAndDataIncomeAndValue(
             Long contractId,
-            LocalDate dataincome,
+            LocalDate dataIncome,
             BigDecimal value);
 }

@@ -3,7 +3,7 @@ import java.util.List;
 
 import dev.java.transparence.dto.ExpenseRequestDTO;
 import dev.java.transparence.dto.ExpenseResponseDTO;
-import dev.java.transparence.entity.Expense;
+
 
 
 
@@ -16,7 +16,7 @@ public interface expenseService {
 
     public void deleteExpense(Long id);
 
-    public ExpenseResponseDTO findExpensById(Long id);
+    public ExpenseResponseDTO findExpenseById(Long id);
 
     public List<ExpenseResponseDTO> buscarTodosexpenses();
 }

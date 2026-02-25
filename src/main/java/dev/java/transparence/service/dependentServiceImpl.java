@@ -34,7 +34,7 @@ public class dependentServiceImpl implements dependentService {
 
         Dependent dependent = new Dependent(
                 dto.getCpf(),
-                dto.getname(),
+                dto.getName(),
                 dto.getphone(),
                 dto.getadress(),
                 dto.getcity(),
@@ -56,12 +56,12 @@ public class dependentServiceImpl implements dependentService {
 
         Dependent existente = findDependentEntityById(id);
 
-        existente.setname(dto.getname());
-        existente.setphone(dto.getphone());
-        existente.setadress(dto.getadress());
-        existente.setcity(dto.getcity());
-        existente.setstate(dto.getstate());
-        existente.setzipCode(dto.getzipCode());
+        existente.setName(dto.getName());
+        existente.setPhone(dto.getphone());
+        existente.setAdress(dto.getadress());
+        existente.setCity(dto.getcity());
+        existente.setState(dto.getstate());
+        existente.setZipCode(dto.getzipCode());
 
         Dependent save = dependentRepository.save(existente);
 
@@ -110,12 +110,12 @@ public class dependentServiceImpl implements dependentService {
 
         dto.setId(dependent.getId());
         dto.setCpf(dependent.getCpf());
-        dto.setname(dependent.getname());
-        dto.setphone(dependent.getphone());
-        dto.setadress(dependent.getadress());
-        dto.setcity(dependent.getcity());
-        dto.setstate(dependent.getstate());
-        dto.setzipCode(dependent.getzipCode());
+        dto.setname(dependent.getName());
+        dto.setphone(dependent.getPhone());
+        dto.setadress(dependent.getAdress());
+        dto.setcity(dependent.getCity());
+        dto.setstate(dependent.getState());
+        dto.setzipCode(dependent.getZipCode());
 
         return dto;
     }

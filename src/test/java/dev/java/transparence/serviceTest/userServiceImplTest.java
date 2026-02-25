@@ -69,12 +69,12 @@ public class userServiceImplTest {
         when(userRepository.existsByCpf(dto.getCpf())).thenReturn(false);
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
         when(userRepository.save(any()))
-                .thenReturn(new User(dto.getCpf(), dto.getname(), dto.getEmail(), dto.getpassword(), dto.getphone(),
+                .thenReturn(new User(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getpassword(), dto.getphone(),
                         dto.getadress(), dto.getcity(), dto.getstate(), dto.getzipCode()));
 
         UserResponseDTO response = userServiceImpl.createUser(dto);
         assertEquals(dto.getCpf(), response.getCpf());
-        assertEquals(dto.getname(), response.getname());
+        assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
         assertEquals(dto.getphone(), response.getphone());
         assertEquals(dto.getadress(), response.getadress());
@@ -147,7 +147,7 @@ public class userServiceImplTest {
 
         assertNotNull(response);
         assertEquals(id, response.getId());
-        assertEquals(dto.getname(), response.getname());
+        assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
         assertEquals(dto.getphone(), response.getphone());
         assertEquals(dto.getadress(), response.getadress());
@@ -175,7 +175,7 @@ public class userServiceImplTest {
 
         UserResponseDTO response = userServiceImpl.updateUser(id, dto);
         assertNotNull(response);
-        assertEquals(dto.getname(), response.getname());
+        assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
         assertEquals(dto.getphone(), response.getphone());
         assertEquals(dto.getadress(), response.getadress());

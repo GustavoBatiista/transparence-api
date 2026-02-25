@@ -59,7 +59,7 @@ public class dependentServiceImplTest {
         when(dependentRepository.save(any(Dependent.class))).thenReturn(dependent);
 
         DependentResponseDTO response = dependentServiceImpl.createDependent(dto);
-        assertEquals(dto.getname(), response.getname());
+        assertEquals(dto.getName(), response.getName());
 
         verify(dependentRepository).existsByCpf(dto.getCpf());
         verify(dependentRepository).save(any(Dependent.class));
@@ -88,7 +88,7 @@ public class dependentServiceImplTest {
         when(dependentRepository.save(any(Dependent.class))).thenReturn(dependent);
         DependentResponseDTO response = dependentServiceImpl.updateDependent(id, dto);
 
-        assertEquals(dto.getname(), response.getname());
+        assertEquals(dto.getName(), response.getName());
 
         verify(dependentRepository).findById(id);
         verify(dependentRepository).save(any(Dependent.class));
