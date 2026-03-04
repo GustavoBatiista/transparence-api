@@ -27,20 +27,20 @@ import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.ContractRepository;
 import dev.java.transparence.service.ContractServiceImpl;
-import dev.java.transparence.service.dependentService;
-import dev.java.transparence.service.userService;
+import dev.java.transparence.service.DependentService;
+import dev.java.transparence.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
-public class contractServiceImplTest {
+public class ContractServiceImplTest {
 
     @Mock
     private ContractRepository contractRepository;
 
     @Mock
-    private userService userService;
+    private UserService userService;
 
     @Mock
-    private dependentService dependentService;
+    private DependentService dependentService;
 
     @InjectMocks
     private ContractServiceImpl contractServiceImpl;

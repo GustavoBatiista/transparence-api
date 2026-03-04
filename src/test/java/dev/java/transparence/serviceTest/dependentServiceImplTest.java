@@ -22,16 +22,16 @@ import dev.java.transparence.entity.Dependent;
 import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.DependentRepository;
-import dev.java.transparence.service.dependentServiceImpl;
+import dev.java.transparence.service.DependentServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class dependentServiceImplTest {
+public class DependentServiceImplTest {
 
     @Mock
     private DependentRepository dependentRepository;
 
     @InjectMocks
-    private dependentServiceImpl dependentServiceImpl;
+    private DependentServiceImpl dependentServiceImpl;
 
     private DependentRequestDTO createDependentRequestDTO() {
         DependentRequestDTO dto = new DependentRequestDTO();

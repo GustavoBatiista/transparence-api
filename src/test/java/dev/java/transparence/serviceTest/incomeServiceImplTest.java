@@ -31,17 +31,17 @@ import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.IncomeRepository;
 import dev.java.transparence.service.ContractService;
-import dev.java.transparence.service.incomeServiceImpl;
+import dev.java.transparence.service.IncomeServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class incomeServiceImplTest {
+public class IncomeServiceImplTest {
 
     @Mock
     private IncomeRepository incomeRepository;
     @Mock
     private ContractService contractService;
     @InjectMocks
-    private incomeServiceImpl incomeServiceImpl;
+    private IncomeServiceImpl incomeServiceImpl;
 
     private IncomeRequestDTO createincomeRequestDTO() {
         IncomeRequestDTO dto = new IncomeRequestDTO();

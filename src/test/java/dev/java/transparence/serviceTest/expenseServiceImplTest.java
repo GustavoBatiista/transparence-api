@@ -31,17 +31,17 @@ import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.ExpenseRepository;
 import dev.java.transparence.service.ContractService;
-import dev.java.transparence.service.expenseServiceImpl;
+import dev.java.transparence.service.ExpenseServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class expenseServiceImplTest {
+public class ExpenseServiceImplTest {
 
     @Mock
     private ExpenseRepository expenseRepository;
     @Mock
     private ContractService contractService;
     @InjectMocks
-    private expenseServiceImpl expenseServiceImpl;
+    private ExpenseServiceImpl expenseServiceImpl;
 
     private ExpenseRequestDTO createExpenseRequestDTO() {
         ExpenseRequestDTO dto = new ExpenseRequestDTO();

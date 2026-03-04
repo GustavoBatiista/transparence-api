@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import dev.java.transparence.dto.UserRequestDTO;
 import dev.java.transparence.dto.UserResponseDTO;
@@ -23,16 +24,19 @@ import dev.java.transparence.entity.User;
 import dev.java.transparence.exception.BusinessException;
 import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.UserRepository;
-import dev.java.transparence.service.userServiceImpl;
+import dev.java.transparence.service.UserServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class userServiceImplTest {
+public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
-    private userServiceImpl userServiceImpl;
+    private UserServiceImpl userServiceImpl;
 
     private UserRequestDTO createUserRequestDTO() {
         UserRequestDTO dto = new UserRequestDTO();
@@ -66,6 +70,7 @@ public class userServiceImplTest {
 
         UserRequestDTO dto = createUserRequestDTO();
 
+        when(passwordEncoder.encode(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(userRepository.existsByCpf(dto.getCpf())).thenReturn(false);
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
         when(userRepository.save(any()))
@@ -92,6 +97,7 @@ public class userServiceImplTest {
 
         UserRequestDTO dto = createUserRequestDTO();
 
+        when(passwordEncoder.encode(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(userRepository.existsByCpf(dto.getCpf())).thenReturn(true);
 
         assertThrows(BusinessException.class,
@@ -107,8 +113,10 @@ public class userServiceImplTest {
 
         UserRequestDTO dto = createUserRequestDTO();
 
+        when(passwordEncoder.encode(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(userRepository.existsByCpf(dto.getCpf())).thenReturn(false);
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(true);
+
 
         assertThrows(BusinessException.class,
                 () -> userServiceImpl.createUser(dto));
