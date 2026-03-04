@@ -17,14 +17,14 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.IncomeRepository;
 
 @Service
-public class incomeServiceImpl implements incomeService {
+public class IncomeServiceImpl implements IncomeService {
 
-    private static final Logger log = LoggerFactory.getLogger(incomeServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(IncomeServiceImpl.class);
 
     private IncomeRepository incomeRepository;
     private ContractService contractService;
 
-    public incomeServiceImpl(IncomeRepository incomeRepository, ContractService contractService) {
+    public IncomeServiceImpl(IncomeRepository incomeRepository, ContractService contractService) {
         this.incomeRepository = incomeRepository;
         this.contractService = contractService;
     }

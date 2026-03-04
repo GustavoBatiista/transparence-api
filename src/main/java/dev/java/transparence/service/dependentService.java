@@ -6,7 +6,7 @@ import dev.java.transparence.dto.DependentResponseDTO;
 import dev.java.transparence.entity.Dependent;
 
 
-public interface dependentService {
+public interface DependentService {
 
     public Dependent findDependentEntityById(Long id);
 

@@ -6,7 +6,7 @@ import dev.java.transparence.dto.IncomeRequestDTO;
 import dev.java.transparence.dto.IncomeResponseDTO;
 
 
-public interface incomeService {
+public interface IncomeService {
 
     public IncomeResponseDTO createIncome(IncomeRequestDTO dto);
 

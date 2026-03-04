@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.transparence.dto.ExpenseRequestDTO;
 import dev.java.transparence.dto.ExpenseResponseDTO;
-import dev.java.transparence.service.expenseService;
+import dev.java.transparence.service.ExpenseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -24,9 +24,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/expenses")
 public class ExpenseController {
 
-    private expenseService expenseService;
+    private ExpenseService expenseService;
 
-    public ExpenseController(expenseService expenseService) {
+    public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
 

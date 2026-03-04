@@ -12,13 +12,13 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.DependentRepository;
 
 @Service
-public class dependentServiceImpl implements dependentService {
+public class DependentServiceImpl implements DependentService {
 
-    private static final Logger log = LoggerFactory.getLogger(dependentServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(DependentServiceImpl.class);
 
     private DependentRepository dependentRepository;
 
-    public dependentServiceImpl(DependentRepository dependentRepository) {
+    public DependentServiceImpl(DependentRepository dependentRepository) {
         this.dependentRepository = dependentRepository;
     }
 

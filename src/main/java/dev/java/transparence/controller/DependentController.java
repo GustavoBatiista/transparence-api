@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.transparence.dto.DependentRequestDTO;
 import dev.java.transparence.dto.DependentResponseDTO;
-import dev.java.transparence.service.dependentService;
+import dev.java.transparence.service.DependentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -22,9 +22,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/dependents")
 public class DependentController {
 
-    private dependentService dependentService;
+    private DependentService dependentService;
 
-    public DependentController(dependentService dependentService) {
+    public DependentController(DependentService dependentService) {
         this.dependentService = dependentService;
     }
 

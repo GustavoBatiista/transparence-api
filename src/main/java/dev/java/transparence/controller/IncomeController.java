@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.transparence.dto.IncomeRequestDTO;
 import dev.java.transparence.dto.IncomeResponseDTO;
-import dev.java.transparence.service.incomeService;
+import dev.java.transparence.service.IncomeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -24,9 +24,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/incomes")
 public class IncomeController {
 
-    private incomeService incomeService;
+    private IncomeService incomeService;
 
-    public IncomeController(incomeService incomeService) {
+    public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
 

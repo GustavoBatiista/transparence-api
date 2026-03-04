@@ -7,7 +7,7 @@ import dev.java.transparence.dto.ExpenseResponseDTO;
 
 
 
-public interface expenseService {
+public interface ExpenseService {
 
 
     public ExpenseResponseDTO createExpense(ExpenseRequestDTO dto);

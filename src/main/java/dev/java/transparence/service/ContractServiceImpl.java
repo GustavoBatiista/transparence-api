@@ -22,12 +22,12 @@ public class ContractServiceImpl implements ContractService {
     private static final Logger log = LoggerFactory.getLogger(ContractServiceImpl.class);
 
     private ContractRepository contractRepository;
-    private userService userService;
-    private dependentService dependentService;
+    private UserService userService;
+    private DependentService dependentService;
 
     public ContractServiceImpl(ContractRepository contractRepository,
-            userService userService,
-            dependentService dependentService) {
+            UserService userService,
+            DependentService dependentService) {
         this.contractRepository = contractRepository;
         this.userService = userService;
         this.dependentService = dependentService;
