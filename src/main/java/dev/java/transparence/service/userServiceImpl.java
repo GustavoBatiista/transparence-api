@@ -1,9 +1,11 @@
 package dev.java.transparence.service;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import dev.java.transparence.dto.UserRequestDTO;
 import dev.java.transparence.dto.UserResponseDTO;
 import dev.java.transparence.entity.User;
@@ -12,14 +14,17 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.UserRepository;
 
 @Service
-public class userServiceImpl implements userService {
+public class UserServiceImpl implements UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(userServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private UserRepository userRepository;
 
-    public userServiceImpl(UserRepository userRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class userServiceImpl implements userService {
             throw new BusinessException("Email already registered");
         }
 
-        User user = new User(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getpassword(),
+        User user = new User(dto.getCpf(), dto.getName(), dto.getEmail(), passwordEncoder.encode(dto.getpassword()),
                 dto.getphone(), dto.getadress(), dto.getcity(), dto.getstate(),
                 dto.getzipCode());
 

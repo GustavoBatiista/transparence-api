@@ -4,7 +4,7 @@ import dev.java.transparence.dto.UserRequestDTO;
 import dev.java.transparence.dto.UserResponseDTO;
 import dev.java.transparence.entity.User;
 
-public interface userService {
+public interface UserService {
 
     public User findUserByContract(Long id);
 

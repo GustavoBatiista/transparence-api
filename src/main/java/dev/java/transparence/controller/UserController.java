@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.transparence.dto.UserRequestDTO;
 import dev.java.transparence.dto.UserResponseDTO;
-import dev.java.transparence.service.userService;
+import dev.java.transparence.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -22,9 +22,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
-    private userService userService;
+    private UserService userService;
 
-    public UserController(userService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
