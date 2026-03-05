@@ -6,7 +6,7 @@ public class DependentResponseDTO {
     private String cpf;
     private String name;
     private String phone;
-    private String adress;
+    private String address;
     private String city;
     private String state;
     private String zipCode;
@@ -44,11 +44,11 @@ public class DependentResponseDTO {
     }
 
     public String getAddress() {
-        return adress;
+        return address;
     }
 
-    public void setAddress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCity() {

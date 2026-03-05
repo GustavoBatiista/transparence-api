@@ -20,7 +20,7 @@ public class UserRequestDTO {
     @Pattern(regexp = "\\d{11}", message = "phone must have at least 11 digits")
     private String phone;
     @NotBlank(message = "Adress is required")
-    private String adress;
+    private String address;
     @NotBlank(message = "City is required")
     private String city;
     @NotBlank(message = "State is required")
@@ -66,11 +66,11 @@ public class UserRequestDTO {
     }
 
     public String getAddress() {
-        return adress;
+        return address;
     }
 
-    public void setAddress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCity() {

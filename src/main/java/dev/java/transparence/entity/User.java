@@ -28,8 +28,8 @@ public class User {
     private String password;
     @Column(name = "phone", nullable = false, length = 11)
     private String phone;
-    @Column(name = "adress", nullable = false)
-    private String adress;
+    @Column(name = "address", nullable = false)
+    private String address;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "state", nullable = false, length = 2)
@@ -40,7 +40,7 @@ public class User {
     public User() {
     }
 
-    public User(String cpf, String name, String email, String password, String phone, String adress,
+    public User(String cpf, String name, String email, String password, String phone, String address,
             String city, String state, String zipCode) {
 
         this.cpf = cpf;
@@ -48,7 +48,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.adress = adress;
+        this.address = address;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
@@ -95,11 +95,11 @@ public class User {
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAdress(String address) {
+        this.address = address;
     }
 
     public String getCity() {

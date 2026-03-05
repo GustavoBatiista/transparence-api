@@ -23,8 +23,8 @@ public class Dependent {
     private String name;
     @Column(name = "phone", nullable = false, length = 11)
     private String phone;
-    @Column(name = "adress", nullable = false)
-    private String adress;
+    @Column(name = "address", nullable = false)
+    private String address;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "state", nullable = false, length = 2)
@@ -35,12 +35,12 @@ public class Dependent {
     public Dependent() {
     }
 
-    public Dependent(String cpf, String name, String phone, String adress, String city,
+    public Dependent(String cpf, String name, String phone, String address, String city,
             String state, String zipCode) {
         this.cpf = cpf;
         this.name = name;
         this.phone = phone;
-        this.adress = adress;
+        this.address = address;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
@@ -71,11 +71,11 @@ public class Dependent {
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAdress(String address) {
+        this.address = address;
     }
 
     public String getCity() {
