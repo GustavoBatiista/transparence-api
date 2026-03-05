@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("Email already registered");
         }
 
-        User user = new User(dto.getCpf(), dto.getName(), dto.getEmail(), passwordEncoder.encode(dto.getpassword()),
-                dto.getphone(), dto.getadress(), dto.getcity(), dto.getstate(),
-                dto.getzipCode());
+        User user = new User(dto.getCpf(), dto.getName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()),
+                dto.getPhone(), dto.getAddress(), dto.getCity(), dto.getState(),
+                dto.getZipCode());
 
         User save = userRepository.save(user);
 
@@ -68,11 +68,11 @@ public class UserServiceImpl implements UserService {
 
         existente.setName(dto.getName());
         existente.setEmail(dto.getEmail());
-        existente.setPhone(dto.getphone());
-        existente.setAdress(dto.getadress());
-        existente.setCity(dto.getcity());
-        existente.setState(dto.getstate());
-        existente.setZipCode(dto.getzipCode());
+        existente.setPhone(dto.getPhone());
+        existente.setAdress(dto.getAddress());
+        existente.setCity(dto.getCity());
+        existente.setState(dto.getState());
+        existente.setZipCode(dto.getZipCode());
 
         log.info("User updated successfully. userId={}", id);
 
@@ -119,13 +119,13 @@ public class UserServiceImpl implements UserService {
 
         dto.setId(user.getId());
         dto.setCpf(user.getCpf());
-        dto.setname(user.getName());
+        dto.setName(user.getName());
         dto.setEmail(user.getEmail());
-        dto.setphone(user.getPhone());
-        dto.setadress(user.getAdress());
-        dto.setcity(user.getCity());
-        dto.setstate(user.getState());
-        dto.setzipCode(user.getZipCode());
+        dto.setPhone(user.getPhone());
+        dto.setAddress(user.getAdress());
+        dto.setCity(user.getCity());
+        dto.setState(user.getState());
+        dto.setZipCode(user.getZipCode());
 
         return dto;
     }

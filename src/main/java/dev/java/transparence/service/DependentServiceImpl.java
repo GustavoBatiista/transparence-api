@@ -35,11 +35,11 @@ public class DependentServiceImpl implements DependentService {
         Dependent dependent = new Dependent(
                 dto.getCpf(),
                 dto.getName(),
-                dto.getphone(),
-                dto.getadress(),
-                dto.getcity(),
-                dto.getstate(),
-                dto.getzipCode());
+                dto.getPhone(),
+                dto.getAddress(),
+                dto.getCity(),
+                dto.getState(),
+                dto.getZipCode());
 
         Dependent save = dependentRepository.save(dependent);
 
@@ -57,11 +57,11 @@ public class DependentServiceImpl implements DependentService {
         Dependent existente = findDependentEntityById(id);
 
         existente.setName(dto.getName());
-        existente.setPhone(dto.getphone());
-        existente.setAdress(dto.getadress());
-        existente.setCity(dto.getcity());
-        existente.setState(dto.getstate());
-        existente.setZipCode(dto.getzipCode());
+        existente.setPhone(dto.getPhone());
+        existente.setAdress(dto.getAddress());
+        existente.setCity(dto.getCity());
+        existente.setState(dto.getState());
+        existente.setZipCode(dto.getZipCode());
 
         Dependent save = dependentRepository.save(existente);
 
@@ -110,12 +110,12 @@ public class DependentServiceImpl implements DependentService {
 
         dto.setId(dependent.getId());
         dto.setCpf(dependent.getCpf());
-        dto.setname(dependent.getName());
-        dto.setphone(dependent.getPhone());
-        dto.setadress(dependent.getAdress());
-        dto.setcity(dependent.getCity());
-        dto.setstate(dependent.getState());
-        dto.setzipCode(dependent.getZipCode());
+        dto.setName(dependent.getName());
+        dto.setPhone(dependent.getPhone());
+        dto.setAddress(dependent.getAdress());
+        dto.setCity(dependent.getCity());
+        dto.setState(dependent.getState());
+        dto.setZipCode(dependent.getZipCode());
 
         return dto;
     }

@@ -37,7 +37,7 @@ public class UserRequestDTO {
         return name;
     }
 
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -49,51 +49,51 @@ public class UserRequestDTO {
         this.email = email;
     }
 
-    public String getpassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setpassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getphone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setphone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getadress() {
+    public String getAddress() {
         return adress;
     }
 
-    public void setadress(String adress) {
+    public void setAddress(String adress) {
         this.adress = adress;
     }
 
-    public String getcity() {
+    public String getCity() {
         return city;
     }
 
-    public void setcity(String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public String getstate() {
+    public String getState() {
         return state;
     }
 
-    public void setstate(String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public String getzipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setzipCode(String zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 

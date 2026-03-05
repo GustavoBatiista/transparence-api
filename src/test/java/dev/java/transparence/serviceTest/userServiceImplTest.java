@@ -42,13 +42,13 @@ public class UserServiceImplTest {
         UserRequestDTO dto = new UserRequestDTO();
         dto.setCpf("12345678901");
         dto.setEmail("teste@teste.com");
-        dto.setname("Teste");
-        dto.setpassword("123456");
-        dto.setphone("12345678901");
-        dto.setadress("Rua Teste, 123");
-        dto.setcity("city Teste");
-        dto.setstate("SP");
-        dto.setzipCode("12345678");
+        dto.setName("Teste");
+        dto.setPassword("123456");
+        dto.setPhone("12345678901");
+        dto.setAddress("Rua Teste, 123");
+        dto.setCity("city Teste");
+        dto.setState("SP");
+        dto.setZipCode("12345678");
         return dto;
     }
 
@@ -74,18 +74,18 @@ public class UserServiceImplTest {
         when(userRepository.existsByCpf(dto.getCpf())).thenReturn(false);
         when(userRepository.existsByEmail(dto.getEmail())).thenReturn(false);
         when(userRepository.save(any()))
-                .thenReturn(new User(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getpassword(), dto.getphone(),
-                        dto.getadress(), dto.getcity(), dto.getstate(), dto.getzipCode()));
+                .thenReturn(new User(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getPassword(), dto.getPhone(),
+                        dto.getAddress(), dto.getCity(), dto.getState(), dto.getZipCode()));
 
         UserResponseDTO response = userServiceImpl.createUser(dto);
         assertEquals(dto.getCpf(), response.getCpf());
         assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
-        assertEquals(dto.getphone(), response.getphone());
-        assertEquals(dto.getadress(), response.getadress());
-        assertEquals(dto.getcity(), response.getcity());
-        assertEquals(dto.getstate(), response.getstate());
-        assertEquals(dto.getzipCode(), response.getzipCode());
+        assertEquals(dto.getPhone(), response.getPhone());
+        assertEquals(dto.getAddress(), response.getAddress());
+        assertEquals(dto.getCity(), response.getCity());
+        assertEquals(dto.getState(), response.getState());
+        assertEquals(dto.getZipCode(), response.getZipCode());
 
         verify(userRepository, times(1)).existsByCpf(dto.getCpf());
         verify(userRepository, times(1)).existsByEmail(dto.getEmail());
@@ -132,13 +132,13 @@ public class UserServiceImplTest {
 
         UserRequestDTO dto = createUserRequestDTO();
         
-        dto.setname("name Atualizado");
+        dto.setName("name Atualizado");
         dto.setEmail("newemail@teste.com");
-        dto.setphone("98765432100");
-        dto.setadress("new Rua, 456");
-        dto.setcity("new city");
-        dto.setstate("RJ");
-        dto.setzipCode("87654321");
+        dto.setPhone("98765432100");
+        dto.setAddress("new Rua, 456");
+        dto.setCity("new city");
+        dto.setState("RJ");
+        dto.setZipCode("87654321");
 
         User user = createUserEntity();
 
@@ -157,11 +157,11 @@ public class UserServiceImplTest {
         assertEquals(id, response.getId());
         assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
-        assertEquals(dto.getphone(), response.getphone());
-        assertEquals(dto.getadress(), response.getadress());
-        assertEquals(dto.getcity(), response.getcity());
-        assertEquals(dto.getstate(), response.getstate());
-        assertEquals(dto.getzipCode(), response.getzipCode());
+        assertEquals(dto.getPhone(), response.getPhone());
+        assertEquals(dto.getAddress(), response.getAddress());
+        assertEquals(dto.getCity(), response.getCity());
+        assertEquals(dto.getState(), response.getState());
+        assertEquals(dto.getZipCode(), response.getZipCode());
         assertEquals(user.getCpf(), response.getCpf()); // CPF não muda
 
         verify(userRepository).findById(id);
@@ -185,11 +185,11 @@ public class UserServiceImplTest {
         assertNotNull(response);
         assertEquals(dto.getName(), response.getName());
         assertEquals(dto.getEmail(), response.getEmail());
-        assertEquals(dto.getphone(), response.getphone());
-        assertEquals(dto.getadress(), response.getadress());
-        assertEquals(dto.getcity(), response.getcity());
-        assertEquals(dto.getstate(), response.getstate());
-        assertEquals(dto.getzipCode(), response.getzipCode());
+        assertEquals(dto.getPhone(), response.getPhone());
+        assertEquals(dto.getAddress(), response.getAddress());
+        assertEquals(dto.getCity(), response.getCity());
+        assertEquals(dto.getState(), response.getState());
+        assertEquals(dto.getZipCode(), response.getZipCode());
         assertEquals(user.getCpf(), response.getCpf());
 
         verify(userRepository).findById(id);
@@ -217,13 +217,13 @@ public class UserServiceImplTest {
         Long id = 1L;
 
         UserRequestDTO dto = createUserRequestDTO();
-        dto.setname("name Atualizado");
+        dto.setName("name Atualizado");
         dto.setEmail("newemail@teste.com");
-        dto.setphone("98765432100");
-        dto.setadress("new Rua, 456");
-        dto.setcity("new city");
-        dto.setstate("RJ");
-        dto.setzipCode("87654321");
+        dto.setPhone("98765432100");
+        dto.setAddress("new Rua, 456");
+        dto.setCity("new city");
+        dto.setState("RJ");
+        dto.setZipCode("87654321");
 
         User userExistente = createUserEntity();
 

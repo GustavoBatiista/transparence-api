@@ -36,12 +36,12 @@ public class DependentServiceImplTest {
     private DependentRequestDTO createDependentRequestDTO() {
         DependentRequestDTO dto = new DependentRequestDTO();
         dto.setCpf("12345678901");
-        dto.setname("Teste");
-        dto.setphone("12345678901");
-        dto.setadress("Rua Teste, 123");
-        dto.setcity("city Teste");
-        dto.setstate("SP");
-        dto.setzipCode("12345678");
+        dto.setName("Teste");
+        dto.setPhone("12345678901");
+        dto.setAddress("Rua Teste, 123");
+        dto.setCity("city Teste");
+        dto.setState("SP");
+        dto.setZipCode("12345678");
         return dto;
     }
 
