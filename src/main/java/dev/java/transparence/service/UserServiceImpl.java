@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         existente.setName(dto.getName());
         existente.setEmail(dto.getEmail());
         existente.setPhone(dto.getPhone());
-        existente.setAdress(dto.getAddress());
+        existente.setAddresss(dto.getAddress());
         existente.setCity(dto.getCity());
         existente.setState(dto.getState());
         existente.setZipCode(dto.getZipCode());
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
-        dto.setAddress(user.getAdress());
+        dto.setAddress(user.getAddresss());
         dto.setCity(user.getCity());
         dto.setState(user.getState());
         dto.setZipCode(user.getZipCode());

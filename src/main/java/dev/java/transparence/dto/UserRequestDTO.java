@@ -19,7 +19,7 @@ public class UserRequestDTO {
     @NotBlank(message = "Phone is required")
     @Pattern(regexp = "\\d{11}", message = "phone must have at least 11 digits")
     private String phone;
-    @NotBlank(message = "Adress is required")
+    @NotBlank(message = "Addresss is required")
     private String address;
     @NotBlank(message = "City is required")
     private String city;

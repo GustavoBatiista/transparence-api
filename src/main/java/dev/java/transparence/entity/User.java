@@ -94,11 +94,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getAdress() {
+    public String getAddresss() {
         return address;
     }
 
-    public void setAdress(String address) {
+    public void setAddresss(String address) {
         this.address = address;
     }
 

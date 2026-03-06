@@ -58,7 +58,7 @@ public class DependentServiceImpl implements DependentService {
 
         existente.setName(dto.getName());
         existente.setPhone(dto.getPhone());
-        existente.setAdress(dto.getAddress());
+        existente.setAddresss(dto.getAddress());
         existente.setCity(dto.getCity());
         existente.setState(dto.getState());
         existente.setZipCode(dto.getZipCode());
@@ -112,7 +112,7 @@ public class DependentServiceImpl implements DependentService {
         dto.setCpf(dependent.getCpf());
         dto.setName(dependent.getName());
         dto.setPhone(dependent.getPhone());
-        dto.setAddress(dependent.getAdress());
+        dto.setAddress(dependent.getAddresss());
         dto.setCity(dependent.getCity());
         dto.setState(dependent.getState());
         dto.setZipCode(dependent.getZipCode());
