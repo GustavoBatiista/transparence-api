@@ -16,7 +16,7 @@ public class OpenApiConfig {
                 .components(
                         new Components()
                                 .addSecuritySchemes(
-                                        "bearerAuth",
+                                        "Authorization",
                                         new SecurityScheme()
                                                 .type(SecurityScheme.Type.HTTP)
                                                 .scheme("bearer")
