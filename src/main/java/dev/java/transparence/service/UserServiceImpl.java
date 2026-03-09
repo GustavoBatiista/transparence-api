@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.java.transparence.dto.UserRequestDTO;
 import dev.java.transparence.dto.UserResponseDTO;
@@ -14,6 +15,7 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.UserRepository;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -95,6 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUserByContract(Long id) {
 
         log.debug("Finding user in database. userId={}", id);
@@ -104,6 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO findUserById(Long id) {
 
         log.info("Finding user by id. userId={}", id);

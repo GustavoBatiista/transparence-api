@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.java.transparence.dto.IncomeRequestDTO;
 import dev.java.transparence.dto.IncomeResponseDTO;
@@ -17,6 +18,7 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.IncomeRepository;
 
 @Service
+@Transactional
 public class IncomeServiceImpl implements IncomeService {
 
     private static final Logger log = LoggerFactory.getLogger(IncomeServiceImpl.class);
@@ -110,6 +112,7 @@ public class IncomeServiceImpl implements IncomeService {
         log.info("Income deleted successfully. incomeId={} | contractId={}", id, contract.getId());
     }
 
+    @Transactional(readOnly = true)
     public Income findIncomeEntityById(Long id) {
 
         log.debug("Finding income in database. incomeId={}", id);
@@ -119,6 +122,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IncomeResponseDTO findIncomeById(Long id) {
 
         log.info("Finding income by id. incomeId={}", id);
@@ -127,6 +131,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<IncomeResponseDTO> findAllIncome() {
 
         log.info("Finding all registered incomes.");

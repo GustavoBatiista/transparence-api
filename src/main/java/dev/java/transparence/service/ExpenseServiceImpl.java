@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.java.transparence.dto.ExpenseRequestDTO;
 import dev.java.transparence.dto.ExpenseResponseDTO;
@@ -17,6 +18,7 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.ExpenseRepository;
 
 @Service
+@Transactional
 public class ExpenseServiceImpl implements ExpenseService {
 
     private static final Logger log = LoggerFactory.getLogger(ExpenseServiceImpl.class);
@@ -105,6 +107,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         log.info("Expense deleted successfully. expenseId={} | contractId={}", id, contract.getId());
     }
 
+    @Transactional(readOnly = true)
     public Expense findExpenseEntityById(Long id) {
 
         log.debug("Finding expense in database. expenseId={}", id);
@@ -114,6 +117,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExpenseResponseDTO findExpenseById(Long id) {
 
         log.info("Finding expense by id. expenseId={}", id);
@@ -122,6 +126,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ExpenseResponseDTO> buscarTodosexpenses() {
 
         log.info("Finding all registered expenses.");

@@ -3,6 +3,7 @@ package dev.java.transparence.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.java.transparence.dto.DependentRequestDTO;
 import dev.java.transparence.dto.DependentResponseDTO;
@@ -12,6 +13,7 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.DependentRepository;
 
 @Service
+@Transactional
 public class DependentServiceImpl implements DependentService {
 
     private static final Logger log = LoggerFactory.getLogger(DependentServiceImpl.class);
@@ -86,6 +88,7 @@ public class DependentServiceImpl implements DependentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Dependent findDependentEntityById(Long id) {
 
         log.debug("Finding dependent in database. dependentId={}", id);
@@ -95,6 +98,7 @@ public class DependentServiceImpl implements DependentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DependentResponseDTO findDependentById(Long id) {
 
         log.info("Finding dependent by id. dependentId={}", id);

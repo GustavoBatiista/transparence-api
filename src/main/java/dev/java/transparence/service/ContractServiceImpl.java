@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.java.transparence.dto.ContractRequestDTO;
 import dev.java.transparence.dto.ContractResponseDTO;
@@ -17,6 +18,7 @@ import dev.java.transparence.exception.ResourceNotFoundException;
 import dev.java.transparence.repository.ContractRepository;
 
 @Service
+@Transactional
 public class ContractServiceImpl implements ContractService {
 
     private static final Logger log = LoggerFactory.getLogger(ContractServiceImpl.class);
@@ -134,6 +136,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contract findContractForOperation(Long id) {
 
         log.debug("Finding contract for operation. contractId={}", id);
@@ -143,6 +146,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ContractResponseDTO findContractById(Long id) {
 
         log.info("Finding contract by id. contractId={}", id);
