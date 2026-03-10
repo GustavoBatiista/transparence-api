@@ -17,7 +17,7 @@ import dev.java.transparence.service.DependentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "2 - Dependent", description = "API for managing dependents")
+@Tag(name = "Dependents", description = "API for managing dependents")
 @RestController
 @RequestMapping("/dependents")
 public class DependentController {

@@ -19,7 +19,7 @@ import dev.java.transparence.service.IncomeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "4 - income", description = "API for managing incomes")
+@Tag(name = "Incomes", description = "API for managing incomes")
 @RestController
 @RequestMapping("/incomes")
 public class IncomeController {

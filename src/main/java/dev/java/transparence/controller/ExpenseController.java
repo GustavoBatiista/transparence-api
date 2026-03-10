@@ -19,7 +19,7 @@ import dev.java.transparence.service.ExpenseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "5 - expense", description = "API for managing expenses")
+@Tag(name = "Expenses", description = "API for managing expenses")
 @RestController
 @RequestMapping("/expenses")
 public class ExpenseController {

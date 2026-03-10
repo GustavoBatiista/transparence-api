@@ -17,7 +17,7 @@ import dev.java.transparence.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "1 - User", description = "API for managing users")
+@Tag(name = "Users", description = "API for managing users")
 @RestController
 @RequestMapping("/users")
 public class UserController {
