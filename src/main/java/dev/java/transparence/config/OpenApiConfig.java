@@ -19,16 +19,6 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-
-                .tags(List.of(
-                        new Tag().name("Auth").description("Authentication endpoints"),
-                        new Tag().name("Users").description("API for managing users"),
-                        new Tag().name("Dependents").description("API for managing dependents"),
-                        new Tag().name("Contracts").description("API for managing contracts"),
-                        new Tag().name("Incomes").description("API for managing incomes"),
-                        new Tag().name("Expenses").description("API for managing expenses")
-                ))
-
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
 
                 .components(new Components()

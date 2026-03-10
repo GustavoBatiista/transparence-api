@@ -17,9 +17,9 @@ import dev.java.transparence.service.ContractService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Contracts", description = "API for managing contracts")
 @RestController
 @RequestMapping("/contracts")
+@Tag(name = "4 - Contracts", description = "API for managing contracts")
 public class ContractController {
 
     private ContractService contractService;
