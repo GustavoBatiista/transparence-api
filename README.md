@@ -1,33 +1,36 @@
 # Transparence API
 
-API REST desenvolvida em Java com Spring Boot para gerenciamento de users, dependents, contracts, expenses e incomes.
+REST API developed in Java with Spring Boot for managing users, dependents, contracts, expenses and incomes.
 
 ![Status](https://img.shields.io/badge/status-online-success)
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
 ![Deploy](https://img.shields.io/badge/deploy-Railway-purple)
 
-## 🌐 API em Produção
+## 🌐 Production API
 
-A aplicação está disponível em ambiente cloud e pode ser testada em tempo real.
+The application is available in a cloud environment and can be tested in real time.
 
 🔗 https://transparence-api-production.up.railway.app
 
 📄 Swagger:  
 🔗 https://transparence-api-production.up.railway.app/swagger-ui.html
 
-A API está publicada em ambiente de produção utilizando Railway, com banco MySQL em cloud e configuração por variáveis de ambiente.
+The API is deployed in a production environment using Railway, with a MySQL cloud database and configuration through environment variables.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Technologies Used
 
 * Java 17+
 * Spring Boot
 * Spring Web
 * Spring Data JPA
 * Hibernate
+* Spring Security
+* JWT Authentication
 * Swagger / OpenAPI
+* Flyway (Database Migration)
 * Maven
 * JUnit / Mockito
 * Docker
@@ -36,226 +39,254 @@ A API está publicada em ambiente de produção utilizando Railway, com banco My
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-O projeto segue uma arquitetura em camadas, separando responsabilidades de forma clara.
+The project follows a layered architecture, separating responsibilities clearly.
 
-### 📦 Camadas
+### 📦 Layers
 
 #### Controller
 
-* Responsável por receber e responder requisições HTTP
-* Trabalha exclusivamente com DTOs
+* Responsible for receiving and responding to HTTP requests
+* Works exclusively with DTOs
+* Documented using Swagger/OpenAPI
 
 #### DTO (Data Transfer Object)
 
-* RequestDTO → dados de entrada
-* ResponseDTO → dados de saída
-* Evita exposição direta das entidades JPA
+* RequestDTO → input data
+* ResponseDTO → output data
+* Prevents direct exposure of JPA entities
 
 #### Service
 
-* Contém as regras de negócio
-* Controla estados e validações
-* Possui interfaces e implementações separadas
-* Possui logs para rastreabilidade das operações
+* Contains the business rules
+* Controls states and validations
+* Uses separated interfaces and implementations
+* Uses `@Transactional` for transaction control
+* Includes logs for operation traceability
 
 #### Repository
 
-* Camada de acesso a dados com Spring Data JPA
+* Data access layer using Spring Data JPA
 
 #### Entity
 
-* Representa o domínio da aplicação
-* Mapeada com JPA/Hibernate
+* Represents the domain of the application
+* Mapped with JPA/Hibernate
 
 ---
 
-## 📌 Funcionalidades
+## 📌 Features
 
 ### 👤 User
 
-* Criar user
-* Atualizar user
-* Buscar user por ID
-* Excluir user
+* Create user
+* Update user
+* Find user by ID
+* Delete user
 
 ### 👥 Dependent
 
-* Criar dependent
-* Atualizar dependent
-* Buscar dependent por ID
-* Excluir dependent
+* Create dependent
+* Update dependent
+* Find dependent by ID
+* Delete dependent
 
 ### 📄 Contract
 
-* Criar contract
-* Buscar contract por ID
-* Suspender contract
-* Reativar contract
-* Encerrar contract
-* Excluir contract
+* Create contract
+* Find contract by ID
+* Suspend contract
+* Reactivate contract
+* Close contract
+* Delete contract
 
-O contract possui controle de status (ACTIVE, SUSPENDED, CLOSED) e suas transições são controladas exclusivamente na camada de service.
+The contract has status control (`ACTIVE`, `SUSPENDED`, `CLOSED`) and its transitions are controlled exclusively in the service layer.
 
 ### 💰 Expense
 
-* Criar expense
-* Atualizar expense
-* Buscar expense por ID
-* Listar expenses
-* Excluir expense
+* Create expense
+* Update expense
+* Find expense by ID
+* List expenses
+* Delete expense
 
-Expenses só podem ser criados, atualizados ou excluídos se o contract estiver ativo.
+Expenses can only be created, updated or deleted if the contract is active.
 
 ### 💵 Income
 
-* Criar income
-* Atualizar income
-* Buscar income por ID
-* Listar incomes
-* Excluir income
+* Create income
+* Update income
+* Find income by ID
+* List incomes
+* Delete income
 
-Incomes também dependem do status do contract.
-
----
-
-## 🔐 Regras de Negócio
-
-* Não é permitido criar contracts ativos duplicados para o mesmo user e dependent
-* Não é permitido criar expenses ou incomes para contracts inativos
-* Não é permitido cadastrar users com CPF ou e-mail duplicados
-* O status do contract é controlado apenas pelo sistema
-* Datas de início, suspensão, reativação e encerramento são definidas automaticamente
+Incomes also depend on the contract status.
 
 ---
 
-## ⚠️ Tratamento de Exceções
+## 🔐 Authentication and Security
 
-A aplicação possui um `GlobalExceptionHandler` responsável por:
+The API uses **JWT (JSON Web Token)** for authentication.
 
-* Padronizar as respostas de erro
-* Retornar os status HTTP corretos
-* Adicionar rastreabilidade nas respostas
+Flow:
 
----
+1. User performs login
+2. API returns a JWT token
+3. The token must be sent in the header of protected requests
 
-## 📊 Observabilidade e Logs
+Authorization: Bearer {token}
 
-* Logs na camada de service
-* Correlation ID para rastreamento de requisições
-* Melhor rastreabilidade de erros
+Swagger also supports authentication using a token to test protected endpoints.
 
 ---
 
-## 🗄️ Banco de Dados
+## 🔄 Transaction Management
 
-* Suporte a H2 para ambiente de desenvolvimento
-* Suporte a MySQL para ambiente de produção
-* Criação de índices para otimização de consultas
-* Constraints para integridade dos dados
+The service layer uses `@Transactional` to guarantee integrity of operations.
+
+* Write methods use full transactions
+* Read methods use `readOnly = true`
 
 ---
 
-## ⚙️ Profiles de Execução
+## ⚠️ Exception Handling
 
-A aplicação utiliza profiles para separar ambientes:
+The application includes a `GlobalExceptionHandler` responsible for:
 
-* `h2` → desenvolvimento
-* `mysql` → produção
+* Standardizing error responses
+* Returning the correct HTTP status codes
+* Adding traceability to error responses
 
-A troca de banco ocorre apenas por configuração, sem necessidade de alterar código.
+---
+
+## 📊 Observability and Logs
+
+* Logs implemented in the service layer
+* Correlation ID for request tracing
+* Better error traceability
+
+---
+
+## 🗄️ Database
+
+* H2 support for development environment
+* MySQL support for production environment
+* Database versioning using **Flyway**
+* Index creation for query optimization
+* Constraints to ensure data integrity
+
+---
+
+## ⚙️ Execution Profiles
+
+The application uses profiles to separate environments:
+
+* `h2` → development
+* `mysql` → production
+
+Database switching occurs only through configuration, without the need to change code.
 
 ---
 
 ## 🐳 Docker
 
-O projeto possui `docker-compose` para subir o ambiente completo:
+The project includes `docker-compose` to start the full environment:
 
-```bash
 docker-compose up -d
-```
 
-Serviços:
+Services:
 
 * MySQL
-* Aplicação Spring Boot
+* Spring Boot Application
 
 ---
 
 ## ☁️ Deploy
 
-Projeto preparado para deploy em cloud (Railway), com:
+Project prepared for cloud deployment (Railway), including:
 
-* Configuração do driver MySQL
-* Uso de variáveis de ambiente
-* Ajustes de profile para produção
-
----
-
-## 🧪 Testes
-
-Foram implementados testes unitários para a camada de service, garantindo:
-
-* Validação das regras de negócio
-* Confiabilidade das operações
-* Facilidade de manutenção
+* MySQL driver configuration
+* Environment variable configuration
+* Production profile adjustments
+* Automatic Flyway migrations on startup
 
 ---
 
-## 📄 Documentação da API (Swagger)
+## 🧪 Tests
 
-Após subir a aplicação, acesse:
+Unit tests were implemented for the service layer, ensuring:
 
-```
+* Validation of business rules
+* Reliability of operations
+* Ease of maintenance
+
+---
+
+## 📄 API Documentation (Swagger)
+
+After starting the application, access:
+
 http://localhost:8080/swagger-ui.html
-```
+
+Or in production:
+
+https://transparence-api-production.up.railway.app/swagger-ui.html
+
+The documentation is organized by API resources:
+
+* Auth
+* Users
+* Dependents
+* Contracts
+* Incomes
+* Expenses
 
 ---
 
-## ▶️ Como Executar o Projeto
+## ▶️ How to Run the Project
 
-### Pré-requisitos
+### Requirements
 
 * Java 17+
 * Maven
-* Docker (opcional)
+* Docker (optional)
 
-### Executando com Maven
+### Running with Maven
 
-```bash
 mvn spring-boot:run
-```
 
-### Executando com Docker
+### Running with Docker
 
-```bash
 docker-compose up -d
-```
 
 ---
 
-## 🧠 Conceitos Aplicados
+## 🧠 Applied Concepts
 
-* Arquitetura em camadas
+* Layered architecture
 * DTO Pattern
-* Separação entre contrato de API e domínio
-* Regras de negócio centralizadas na camada de service
-* Tratamento global de exceções
-* Logs e rastreabilidade
-* Testes unitários
-* Múltiplos profiles de ambiente
-* Preparação para deploy em cloud
+* Separation between API contract and domain
+* Business rules centralized in the service layer
+* Global exception handling
+* Logs and traceability
+* JWT authentication
+* Database versioning with Flyway
+* Transaction control with Spring
+* Unit testing
+* Multiple environment profiles
+* Cloud deployment preparation
 
 ---
 
-## 📌 Status do Projeto
+## 📌 Project Status
 
-🚀 Em evolução contínua com foco em boas práticas de desenvolvimento backend.
+🚀 Project completed as a backend architecture study using Spring Boot and best development practices.
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Gustavo Batista**
-Projeto desenvolvido com foco em aprendizado prático, arquitetura limpa e boas práticas de desenvolvimento backend.
+
+Project developed focusing on practical learning, clean architecture and backend development best practices.
